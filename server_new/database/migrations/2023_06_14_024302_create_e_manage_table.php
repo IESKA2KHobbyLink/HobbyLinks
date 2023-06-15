@@ -17,6 +17,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            // 複合主キーじゃないと元テーブルとの整合性がとれなくなる
             $table->primary(['event_id', 'user_id']);
 
             $table->foreign('event_id')->references('event_id')->on('events');

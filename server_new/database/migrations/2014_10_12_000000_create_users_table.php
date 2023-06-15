@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('gender', 3)->nullable();
             $table->string('email', 256)->unique();
             $table->string('password', 64);
+
+            // アイコンのパスが入るのか？nullの場合は初期アイコン
+            $table->string('profile_Pic')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

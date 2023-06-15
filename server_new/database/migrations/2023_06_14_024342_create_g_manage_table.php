@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            // 複合主キーじゃないと元テーブルとの整合性がとれなくなる
             $table->primary(['group_id', 'user_id']);
 
             $table->foreign('group_id')->references('group_id')->on('groups');
