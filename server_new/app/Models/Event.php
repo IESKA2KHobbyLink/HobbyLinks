@@ -12,6 +12,6 @@ class Event extends Model
     use SoftDeletes;
 
     protected $table = 'events';
-    protected $primaryKey = 'event_id';
-    protected $fillable = ['event_name', 'prefecture', 'address', 'created_by', 'type', 'header_Url', 'desc'];
+    protected $primaryKey = 'events';
+    protected $fillable = ['event_name', 'prefecture', 'address', 'created_by', 'type', 'header_Url'];
 }

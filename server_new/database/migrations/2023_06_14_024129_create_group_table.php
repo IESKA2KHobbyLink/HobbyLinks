@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('group_id');
             $table->string('group_name', 128);
+
             // フォーリンキーいらないの？
             $table->char('created_byUser', 5); //userID
             $table->integer('people_limit')->nullable();
@@ -21,6 +22,11 @@ return new class extends Migration
             // description=説明 の略
             $table->string('desc');
             $table->string('header_Url');
+
+            $table->char('created_by', 5); //userID
+            $table->integer('people_limit');
+            $table->integer('category_id')->unsigned();
+
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('category_id')->on('categories');

@@ -6,7 +6,7 @@ import Group from "../data/Group";
 
 function Listview({ showList }) {
   return (
-    <div className=' max-w-7xl  mx-auto overflow-y-auto'>
+    <div className=" max-w-5xl mx-auto overflow-y-auto">
       {showList === "event" ? eventlist() : grouplist()}
     </div>
   );

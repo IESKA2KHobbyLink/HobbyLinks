@@ -15,8 +15,10 @@ return new class extends Migration
             $table->increments('group_id');
             $table->string('group_name', 128);
             $table->char('created_by', 5); //userID
-            $table->integer('people_limit');
+            $table->integer('people_limit')->nullable();
             $table->integer('category_id')->unsigned();
+            $table->string('desc');
+            $table->string('header_Url');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('category_id')->references('category_id')->on('categories');
