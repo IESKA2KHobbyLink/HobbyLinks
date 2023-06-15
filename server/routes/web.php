@@ -1,7 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Spatie\LaravelIgnition\Support\LaravelVersion;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
