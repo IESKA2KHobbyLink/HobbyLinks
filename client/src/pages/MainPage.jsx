@@ -8,15 +8,17 @@ import Header from "../components/Header";
 function MainPage() {
   const [showList, setShowList] = useState("group");
   return (
-    <div className=" min-h-screen">
+    <div className=' min-h-screen'>
       <Header />
-      <div className="max-w-7xl mx-auto grid grid-cols-12">
-        <div className="col-span-2 sticky top-0"></div>
-        <div className="col-span-8">
+      <div className='max-w-screen-2xl mx-auto grid grid-cols-12'>
+        <div className='col-span-2 sticky top-0'></div>
+        <div className='col-span-8'>
           <Searchbar setShowList={setShowList} showList={showList} />
           <Listview showList={showList} />
         </div>
-        <div className="col-span-2 px-4"></div>
+        <div className='col-span-2 px-4'>
+          <Map></Map>
+        </div>
       </div>
     </div>
   );

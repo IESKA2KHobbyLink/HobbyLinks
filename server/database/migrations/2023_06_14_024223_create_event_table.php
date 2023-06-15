@@ -19,6 +19,7 @@ return new class extends Migration
             $table->char('created_by', 5); //userID参照
             $table->string('type');
             $table->string('header_Url');
+            $table->string('desc');
             $table->timestamps();
             $table->softDeletes();
         });
