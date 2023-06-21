@@ -139,7 +139,7 @@ function Header() {
           </div>
           <div>
             <label for="email" className="block mb-2 text-sm font-medium text-grey-900">
-              Your Email
+              Email
             </label>
             <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -150,7 +150,7 @@ function Header() {
           </div>
           <div>
             <label for="password" className="block mb-2 text-sm font-medium text-grey-900">
-              Your Password
+              Password
             </label>
             <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
