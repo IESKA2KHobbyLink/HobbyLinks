@@ -86,11 +86,11 @@ function Header() {
       </div>
     </Modal>
     <Modal isVisible={showModal2} onClose={() => setShowModal2(false)}>
-    <div className="py-6 px-6 lg:px-8 text-left">
+      <div className="py-6 px-6 lg:px-8 text-left">
         <h3 className="text-gray-800 font-bold text-2xl mb-1">Sign up</h3>
         <br></br>
         <form className="spacy-y-6" action="#">
-        <div>
+          <div>
             <label for="name" className="block mb-2 text-sm font-medium text-grey-900">
               Name
             </label>
@@ -131,9 +131,10 @@ function Header() {
                 <path d="M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4" />
               </svg>
               <select id="gender" name="gender" className="boder border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5">
-                <option value="0">Male</option>
-                <option value="1">Female</option>
-                <option value="2">Orther</option>
+                <option value="0">-- Select --</option>
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+                <option value="3">Orther</option>
               </select>
             </div>
           </div>
