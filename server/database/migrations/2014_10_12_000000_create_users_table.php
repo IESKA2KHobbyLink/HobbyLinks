@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('user_id');
             $table->string('user_name', 128);
             $table->date('birthday')->nullable();
-            $table->string('gender', 3)->nullable();
+            $table->string('gender', 10)->nullable();
             $table->string('email', 256)->unique();
             $table->string('password', 64);
             // アイコンのパスが入るのか？nullの場合は初期アイコン

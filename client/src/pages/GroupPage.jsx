@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../components/Header";
-import Group from "../data/Group";
-import Events from "../data/Events";
+
 import GroupHeader from "../components/groupComponents/GroupHeader";
 import About from "../components/groupComponents/About";
 import EventsSection from "../components/groupComponents/EventsSection";
@@ -43,7 +41,6 @@ function GroupPage() {
   }, [groupId]);
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-slate-50">
         <div className="flex flex-col mb-2 mx-auto max-w-5xl bg-white px-5 py-5 shadow-lg min-h-screen">
           {/* btnsection */}

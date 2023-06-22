@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Group from "../data/Group";
-import Events from "../data/Events";
-import Header from "../components/Header";
 import EventHeader from "../components/eventComponents/EventHeader";
 import EventDesc from "../components/eventComponents/EventDesc";
 import axios from "axios";
@@ -20,9 +17,7 @@ function EventPage() {
   useEffect(() => {
     const fetchEventsData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/events/${eventId}`
-        );
+        const response = await axios.get(`http://localhost:8000/api/events/${eventId}`);
         console.log(response);
         setEventDetails({
           title: response.data.event_name,
@@ -39,13 +34,9 @@ function EventPage() {
 
   return (
     <>
-      <Header />
-      <div className=" min-h-screen bg-slate-50">
-        <div className="flex flex-col mb-2 mx-auto max-w-5xl bg-white  py-5 shadow-lg min-h-screen">
-          <EventHeader
-            imgUrl={eventDetails.imgUrl}
-            title={eventDetails.title}
-          />
+      <div className=' min-h-screen bg-slate-50'>
+        <div className='flex flex-col mb-2 mx-auto max-w-5xl bg-white  py-5 shadow-lg min-h-screen'>
+          <EventHeader imgUrl={eventDetails.imgUrl} title={eventDetails.title} />
           <EventDesc desc={eventDetails.desc} />
         </div>
       </div>
