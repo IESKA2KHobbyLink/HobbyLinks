@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+import GroupPage from "./pages/GroupPage";
+import EventPage from "./pages/EventPage";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <div>
-      <h1 className="text-5xl font-bold underline text-red-600">
-        Hello world!
-      </h1>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path='/' element={<MainPage />} />
+        <Route path='/group/:groupId' element={<GroupPage />} />
+        <Route path='/event/:eventId' element={<EventPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
