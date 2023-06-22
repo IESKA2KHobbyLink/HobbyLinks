@@ -22,7 +22,9 @@ function GroupPage() {
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/groups/${groupId}`);
+        const response = await axios.get(
+          `http://localhost:8000/api/groups/${groupId}`
+        );
         console.log(response);
         setGroupDetails({
           title: response.data.group_name,
@@ -39,10 +41,14 @@ function GroupPage() {
   }, [groupId]);
   return (
     <>
-      <div className='min-h-screen bg-slate-50'>
-        <div className='flex flex-col mb-2 mx-auto max-w-5xl bg-white px-5 py-5 shadow-lg min-h-screen'>
+      <div className="min-h-screen bg-slate-50">
+        <div className="flex flex-col mb-2 mx-auto max-w-5xl bg-white px-5 py-5 shadow-lg min-h-screen">
           {/* btnsection */}
-          <GroupHeader groupId={groupId} imgUrl={groupDetails.imgUrl} title={groupDetails.title} />
+          <GroupHeader
+            groupId={groupId}
+            imgUrl={groupDetails.imgUrl}
+            title={groupDetails.title}
+          />
           <About desc={groupDetails.desc} />
 
           <EventsSection events={groupDetails.events} />
