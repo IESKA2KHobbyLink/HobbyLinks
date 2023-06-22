@@ -23,7 +23,7 @@ class UserFactory extends Factory
         return [
             'user_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'gender' => fake()->randomElement(['man', 'woman']),
+            'gender' => fake()->randomElement(['Male', 'Female', 'other']),
             'password' => bcrypt('password', []), // password
             'birthday' => fake()->date(),
         ];
