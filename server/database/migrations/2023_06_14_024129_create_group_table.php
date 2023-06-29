@@ -18,7 +18,8 @@ return new class extends Migration
             $table->integer('category_id')->unsigned();
             $table->integer('people_limit')->nullable();
             $table->string('header_path', 350)->default(""); //画像
-            $table->string('desc'); // description=説明 の略
+            $table->string('desc', 350); // description=説明 の略
+            $table->string('prefecture'); //
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('created_by')->references('user_id')->on('users');

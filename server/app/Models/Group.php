@@ -20,6 +20,7 @@ class Group extends Model
         'people_limit',
         'category_id',
         'desc',
+        'prefecture',
         'header_Url'
     ];
 }

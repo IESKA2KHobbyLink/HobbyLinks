@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('ent_date')->useCurrent(); // ユーザの参加日
 
             $table->timestamps();
-            $table->softDeletes();
+
 
             // 複合主キーじゃないと元テーブルとの整合性がとれなくなる
             $table->primary(['group_id', 'user_id']);

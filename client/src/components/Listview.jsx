@@ -32,7 +32,7 @@ function Listview({ showList }) {
   }, []);
 
   return (
-    <div className=" max-w-7xl  mx-auto overflow-y-auto">
+    <div className=' max-w-7xl  mx-auto overflow-y-auto'>
       {showList === "event" ? eventlist({ events }) : grouplist({ groups })}
     </div>
   );
@@ -45,6 +45,8 @@ function eventlist({ events }) {
       desc={e.desc}
       title={e.event_name}
       eventId={e.event_id}
+      imgUrl={e.header_path}
+      date={e.date}
     />
   ));
 }
@@ -56,6 +58,7 @@ function grouplist({ groups }) {
       desc={e.desc}
       title={e.group_name}
       groupId={e.group_id}
+      imgUrl={e.header_path}
     />
   ));
 }
