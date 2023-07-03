@@ -43,7 +43,7 @@ Route::get('/groups/{id}', [GroupController::class, 'show']);
 Route::post('/groups', [GroupController::class, 'store']);
 Route::put('/groups/{id}', [GroupController::class, 'update']);
 Route::delete('/groups/{id}', [GroupController::class, 'destroy']);
-
+Route::get('/search', 'Group@search');
 
 //Events Routes
 Route::get('/events', [EventController::class, 'index']);
@@ -51,6 +51,8 @@ Route::get('/events/{id}', [EventController::class, 'show']);
 Route::post('/events', [EventController::class, 'store']);
 Route::put('/events/{id}', [EventController::class, 'update']);
 Route::delete('/events/{id}', [EventController::class, 'destroy']);
+Route::get('/search', 'Event@search');
+
 
 //Gmanage route
 Route::get('/groups/{id}/users', [G_manageController::class, 'queryUserInGroup']);
