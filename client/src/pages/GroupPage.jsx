@@ -34,9 +34,7 @@ function GroupPage() {
   useEffect(() => {
     const fetchGroupData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/groups/${groupId}`
-        );
+        const response = await axios.get(`http://localhost:8000/api/groups/${groupId}`);
 
         setGroupDetails({
           title: response.data.group_name,
@@ -58,12 +56,11 @@ function GroupPage() {
 
   //handle Join group btn
   const [joined, setJoined] = useState(false);
+
   //check if current user is in group if true setJoined to true
   const currentUserInGroup = async () => {
     try {
-      const res = await http.get(
-        `http://localhost:8000/api/groups/${groupId}/users`
-      );
+      const res = await http.get(`http://localhost:8000/api/groups/${groupId}/users`);
       const members = res.data;
 
       const currentUserExists = members.some(
@@ -99,15 +96,10 @@ function GroupPage() {
         formData.append("_method", "DELETE");
         formData.append("group_id", groupId);
         formData.append("user_id", currentUser.data.user_id);
-        const res = await http.post(
-          `http://localhost:8000/api/groups/${groupId}/users`,
-          formData
-        );
+        const res = await http.post(`http://localhost:8000/api/groups/${groupId}/users`, formData);
         console.log("Remove User to group", res);
         setMembers((prevMembers) =>
-          prevMembers.filter(
-            (member) => member.user_id !== currentUser.data.user_id
-          )
+          prevMembers.filter((member) => member.user_id !== currentUser.data.user_id)
         );
       }
     } catch (error) {
@@ -124,10 +116,7 @@ function GroupPage() {
         let formData = new FormData();
         formData.append("group_id", groupId);
         formData.append("user_id", currentUser.data.user_id);
-        const res = await http.post(
-          `http://localhost:8000/api/groups/${groupId}/users`,
-          formData
-        );
+        const res = await http.post(`http://localhost:8000/api/groups/${groupId}/users`, formData);
         console.log("Add User to group", res);
         const newMember = res.data.usersData;
         setMembers((prevMembers) => [...prevMembers, newMember]);
@@ -144,9 +133,7 @@ function GroupPage() {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/groups/${groupId}/users`
-        );
+        const response = await axios.get(`http://localhost:8000/api/groups/${groupId}/users`);
         setMembers(response.data);
       } catch (error) {
         console.error("Error fetching members:", error);
@@ -160,8 +147,8 @@ function GroupPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-slate-50">
-        <div className="flex flex-col mb-2 mx-auto max-w-5xl bg-white px-5 py-5 shadow-lg min-h-screen">
+      <div className='min-h-screen bg-slate-50'>
+        <div className='flex flex-col mb-2 mx-auto max-w-5xl bg-white px-5 py-5 shadow-lg min-h-screen'>
           {/* btnsection */}
           <GroupHeader
             groupId={groupId}
@@ -172,36 +159,36 @@ function GroupPage() {
             created_by={groupDetails.created_by}
           />
 
-          <div className="flex mt-10 ">
+          <div className='flex mt-10 '>
             <div>
               <button
-                type=""
-                className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2 ml-5"
+                type=''
+                className='w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2 ml-5'
               >
                 About
               </button>
               <button
-                type=""
-                className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2"
+                type=''
+                className='w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2'
               >
                 Members
               </button>
               <button
-                type=""
-                className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 
-                text-center m-2"
+                type=''
+                className='w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 
+                text-center m-2'
               >
                 Events
               </button>
               <button
-                type=""
-                className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2"
+                type=''
+                className='w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2'
               >
                 Picture
               </button>
               <button
-                type=""
-                className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2"
+                type=''
+                className='w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2'
               >
                 Discussion
               </button>
@@ -216,11 +203,7 @@ function GroupPage() {
                 onClick={handleJoinGroupBtn}
                 disabled={loading} // Disable button while loading
               >
-                {loading
-                  ? "Loading..."
-                  : joined
-                  ? "Leave This Group"
-                  : "Join This Group"}
+                {loading ? "Loading..." : joined ? "Leave This Group" : "Join This Group"}
               </button>
             </div>
           </div>
