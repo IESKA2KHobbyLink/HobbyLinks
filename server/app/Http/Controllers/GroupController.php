@@ -14,6 +14,10 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
+        foreach ($groups as $group) {
+            $users = GManage::where('group_id', $group->group_id)->get();
+            $group->memberCount = count($users);
+        }
         return response()->json($groups, 200);
     }
 
