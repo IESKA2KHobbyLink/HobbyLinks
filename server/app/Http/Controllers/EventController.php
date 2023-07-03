@@ -14,6 +14,12 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
+        foreach ($events as $event) {
+            $users = EManage::where('event_id', $event->event_id)->get();
+            $groupName = Group::find($event->group_id)->group_name;
+            $event->attendeeCount = count($users);
+            $event->group_name =  $groupName;
+        }
         return response()->json($events, 200);
     }
 

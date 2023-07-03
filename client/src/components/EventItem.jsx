@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function EventItem({ imgUrl, title, desc, eventId, date }) {
+function EventItem({
+  imgUrl,
+  title,
+  desc,
+  eventId,
+  date,
+  attendeeCount,
+  group_name,
+  type,
+}) {
   const imgPath = `http://localhost:8000${imgUrl}`;
   return (
     <Link
@@ -15,14 +24,14 @@ function EventItem({ imgUrl, title, desc, eventId, date }) {
         <p className="text-base text-neutral-600">{desc}</p>
 
         <p className="text-md text-neutral-400 font-semibold text-left">
-          eggnam
+          {group_name}
         </p>
 
         <div className="flex gap-2">
           <p className="mb-2 text-sm text-neutral-400 text-left">
-            20 Attendees
+            {attendeeCount} Attendees
           </p>
-          <p className="mb-2 text-sm text-neutral-400 text-left">Online</p>
+          <p className="mb-2 text-sm text-neutral-400 text-left">{type}</p>
         </div>
       </div>
     </Link>
