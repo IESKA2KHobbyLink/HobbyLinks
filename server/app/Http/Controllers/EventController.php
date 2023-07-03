@@ -95,4 +95,18 @@ class EventController extends Controller
         $events->delete();
         return response()->json(null, 204);
     }
+
+    public function search(Request $request)
+    {
+        // 検索条件をリクエストから取得
+        $keyword = $request->input('keyword');
+
+        // 検索ロジックの実装
+        $results = Event::where('group_name', 'like', '%' . $keyword . '%')->get();
+
+        // 必要な場合は認証や権限管理をチェック
+
+        // 検索結果を返す
+        return response()->json($results);
+    }
 }
