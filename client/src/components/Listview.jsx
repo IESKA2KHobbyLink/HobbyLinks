@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import EventItem from "./EventItem";
 import GroupItem from "./GroupItem";
 import axios from "axios";
+import Searchbar from "./Searchbar";
 
-function Listview({ showList }) {
+function Listview() {
   const [events, setEvents] = useState([]);
   const [groups, setGroups] = useState([]);
+
+  const [showList, setShowList] = useState("group");
   useEffect(() => {
     const fetchEventsData = async () => {
       try {
@@ -32,9 +35,12 @@ function Listview({ showList }) {
   }, []);
 
   return (
-    <div className=" max-w-7xl  mx-auto overflow-y-auto">
-      {showList === "event" ? eventlist({ events }) : grouplist({ groups })}
-    </div>
+    <>
+      <Searchbar setShowList={setShowList} showList={showList} />
+      <div className=" max-w-4xl  mx-auto overflow-y-auto">
+        {showList === "event" ? eventlist({ events }) : grouplist({ groups })}
+      </div>
+    </>
   );
 }
 
