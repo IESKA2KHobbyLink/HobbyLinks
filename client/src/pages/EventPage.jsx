@@ -20,16 +20,18 @@ function EventPage() {
     group_name: "",
     group_id: "",
     eventId: eventId,
+    owner: "",
   });
 
-  const [user, setUser] = useState("");
-
+  //logged in user
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
     const fetchEventsData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/events/${eventId}`);
+        const response = await axios.get(
+          `http://localhost:8000/api/events/${eventId}`
+        );
 
         setEventDetails({
           title: response.data.event_name,
@@ -43,28 +45,15 @@ function EventPage() {
           group_name: response.data.group_name,
           group_id: response.data.group_id,
           date: response.data.date,
+          owner: response.data.owner,
         });
       } catch (error) {
         console.error("Error fetching group details:", error);
       }
     };
-    // for created by fix backend later
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/users/${eventDetails.created_by}`
-        );
-        setUser(response.data.user_name);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
 
     fetchEventsData();
-    if (eventDetails.created_by) {
-      fetchUser();
-    }
-  }, [eventId, eventDetails.created_by]);
+  }, [eventId]);
 
   //fetch attendees
   const [attendees, setAttendees] = useState([]);
@@ -72,7 +61,9 @@ function EventPage() {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/events/${eventId}/users`);
+        const response = await axios.get(
+          `http://localhost:8000/api/events/${eventId}/users`
+        );
         setAttendees(response.data);
       } catch (error) {
         console.error("Error fetching attendees:", error);
@@ -84,8 +75,8 @@ function EventPage() {
 
   return (
     <>
-      <div className=' min-h-screen bg-slate-50'>
-        <div className='flex flex-col mb-2 mx-auto max-w-6xl w-full bg-white  py-5 shadow-lg min-h-screen'>
+      <div className=" min-h-screen bg-slate-50">
+        <div className="flex flex-col mb-2 mx-auto max-w-6xl w-full bg-white  py-5 shadow-lg min-h-screen">
           <EventHeader
             imgUrl={eventDetails.imgUrl}
             title={eventDetails.title}
@@ -93,9 +84,9 @@ function EventPage() {
             group_id={eventDetails.group_id}
             currentUser={currentUser}
             eventId={eventId}
-            user={user}
             attendees={attendees}
             setAttendees={setAttendees}
+            owner={eventDetails.owner}
           />
 
           <EventDesc
@@ -107,7 +98,11 @@ function EventPage() {
             date={eventDetails.date}
           />
 
-          <AttendeesSection eventId={eventId} attendees={attendees} currentUser={currentUser} />
+          <AttendeesSection
+            eventId={eventId}
+            attendees={attendees}
+            currentUser={currentUser}
+          />
         </div>
       </div>
     </>

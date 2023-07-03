@@ -68,8 +68,11 @@ class GroupController extends Controller
     public function show(string $id)
     {
         $group = Group::find($id);
-        // $user = User::find($group->created_by);
-        // $userName = $user->user_name;
+        $user = User::find($group->created_by);
+        $group->owner = $user->user_name;
+        $users = GManage::where('group_id', $group->group_id)->get();
+        $group->memberCount = count($users);
+
         return response()->json($group, 200);
     }
 

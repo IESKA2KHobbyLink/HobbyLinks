@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EManage;
 use App\Models\Group;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -79,6 +80,8 @@ class EventController extends Controller
         $group = Group::find($events->group_id);
         $groupName = $group->group_name;
         $events->group_name = $groupName;
+        $userName = User::find($events->created_by)->user_name;
+        $events->owner = $userName;
         return response()->json($events, 200);
     }
 
