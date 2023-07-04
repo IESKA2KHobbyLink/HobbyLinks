@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import EventItem from "./EventItem";
 import GroupItem from "./GroupItem";
 import axios from "axios";
 import Searchbar from "./Searchbar";
+import { SearchContext } from "./SearchContext";
 
 function Listview() {
   const [events, setEvents] = useState([]);
   const [groups, setGroups] = useState([]);
+
+  const { searchValue } = useContext(SearchContext);
 
   const [showList, setShowList] = useState("group");
   useEffect(() => {
@@ -34,18 +37,27 @@ function Listview() {
     fetchGroupsData();
   }, []);
 
+  const filteredEvents = events.filter((event) =>
+    event.event_name.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  const filteredGroups = groups.filter((group) =>
+    group.group_name.toLowerCase().includes(searchValue.toLowerCase())
+  );
+  console.log("filtered groups", filteredGroups);
   return (
     <>
       <Searchbar setShowList={setShowList} showList={showList} />
-      <div className=" max-w-4xl  mx-auto overflow-y-auto">
-        {showList === "event" ? eventlist({ events }) : grouplist({ groups })}
+      <div className=' max-w-4xl  mx-auto overflow-y-auto'>
+        <h2>Search Results for: {searchValue}</h2>
+        {showList === "event" ? eventlist({ filteredEvents }) : grouplist({ filteredGroups })}
       </div>
     </>
   );
 }
 
-function eventlist({ events }) {
-  return events.map((e) => (
+function eventlist({ filteredEvents }) {
+  return filteredEvents.map((e) => (
     <EventItem
       key={e.event_id}
       desc={e.desc}
@@ -60,8 +72,8 @@ function eventlist({ events }) {
   ));
 }
 
-function grouplist({ groups }) {
-  return groups.map((e) => (
+function grouplist({ filteredGroups }) {
+  return filteredGroups.map((e) => (
     <GroupItem
       key={e.group_id}
       desc={e.desc}
