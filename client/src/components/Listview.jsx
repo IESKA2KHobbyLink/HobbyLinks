@@ -6,17 +6,22 @@ import Searchbar from "./Searchbar";
 import { SearchContext } from "./SearchContext";
 
 function Listview() {
-  // あらかじめ配列に入れる
-  const [events, setEvents] = useState([]);
+  // groupsをsetGroupsという値を変えれる関数で定義する
   const [groups, setGroups] = useState([]);
+  const [events, setEvents] = useState([]);
 
-  // ユーザーが検索クエリを入力したときに、その検索クエリを他のコンポーネントに渡すコード？
+  // serchContextを使うためのコード
+  // 分割代入
   const { searchValue } = useContext(SearchContext);
 
 
-  // showListの値を更新するためにsetgroupは初期値？
+  // showListの値を更新するためにsetShowListがある？groupは初期値？
   const [showList, setShowList] = useState("group");
+  // useEffect関数：effectは副作用という意味を持つ
+  // 副作用フックと言い、第２引数によりrender(更新)時のみに実行するようになる
+  // グループを出入りするときの処理
   useEffect(() => {
+    // データベースからデータを取ってくるコード
     const fetchEventsData = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/events");
@@ -26,6 +31,7 @@ function Listview() {
         console.error("Error fetching events:", error);
       }
     };
+    // 自分を実行
     fetchEventsData();
   }, []);
 
