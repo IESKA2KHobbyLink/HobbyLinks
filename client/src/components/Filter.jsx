@@ -9,11 +9,11 @@ function Filter({ date, type, prefecture, category }) {
       >
         {/* <option value=''>日付が入る</option> */}
 
-        {date.map((d) => (
+        {/* {date.map((d) => (
           <option key={d} value={d}>
             {d}
           </option>
-        ))}
+        ))} */}
 
 
       </select>
