@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('header_path', 350)->default(""); //画像
             $table->string('desc', 350);
+            // イベントの開催日
             $table->date('date');
             $table->timestamps();
             $table->softDeletes();
