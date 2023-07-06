@@ -6,11 +6,15 @@ import Searchbar from "./Searchbar";
 import { SearchContext } from "./SearchContext";
 
 function Listview() {
+  // あらかじめ配列に入れる
   const [events, setEvents] = useState([]);
   const [groups, setGroups] = useState([]);
 
+  // ユーザーが検索クエリを入力したときに、その検索クエリを他のコンポーネントに渡すコード？
   const { searchValue } = useContext(SearchContext);
 
+
+  // showListの値を更新するためにsetgroupは初期値？
   const [showList, setShowList] = useState("group");
   useEffect(() => {
     const fetchEventsData = async () => {
@@ -18,6 +22,7 @@ function Listview() {
         const response = await axios.get("http://localhost:8000/api/events");
         setEvents(response.data);
       } catch (error) {
+        // エラーメッセージを出力
         console.error("Error fetching events:", error);
       }
     };
