@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function EventItem({
@@ -12,6 +12,7 @@ function EventItem({
   type,
 }) {
   const imgPath = `http://localhost:8000${imgUrl}`;
+  useEffect(() => {}, []);
   return (
     <Link
       to={`/event/${eventId}`}

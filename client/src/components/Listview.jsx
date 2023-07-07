@@ -48,20 +48,30 @@ function Listview() {
     fetchGroupsData();
   }, []);
 
-  const filteredEvents = events.filter((event) =>
-    event.event_name.toLowerCase().includes(searchValue.toLowerCase())
+  const filteredEvents = events.filter(
+    (event) =>
+      event.event_name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase().trim()) ||
+      event.prefecture.toLowerCase().includes(searchValue.toLowerCase().trim())
   );
 
-  const filteredGroups = groups.filter((group) =>
-    group.group_name.toLowerCase().includes(searchValue.toLowerCase())
+  const filteredGroups = groups.filter(
+    (group) =>
+      group.group_name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase().trim()) ||
+      group.prefecture.toLowerCase().includes(searchValue.toLowerCase().trim())
   );
-  console.log("filtered groups", filteredGroups);
+
   return (
     <>
       <Searchbar setShowList={setShowList} showList={showList} />
-      <div className=' max-w-4xl  mx-auto overflow-y-auto'>
+      <div className=" max-w-4xl  mx-auto overflow-y-auto">
         <h2>Search Results for: {searchValue}</h2>
-        {showList === "event" ? eventlist({ filteredEvents }) : grouplist({ filteredGroups })}
+        {showList === "event"
+          ? eventlist({ filteredEvents })
+          : grouplist({ filteredGroups })}
       </div>
     </>
   );

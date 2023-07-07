@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AddressAutofill } from "@mapbox/search-js-react";
 
 function CreateEventPage() {
   const http = axios.create({
@@ -34,7 +35,7 @@ function CreateEventPage() {
   }, [user.data.user_id]);
 
   const [userCreatedGroups, setUserCreatedGroup] = useState([]); //fetch http://localhost:8000/api/user/{id}/created_groups
-  console.log("dd", userCreatedGroups);
+
   //From Input State
   const user_id = user.data.user_id;
   const [eventName, setEventName] = useState("");
@@ -81,8 +82,12 @@ function CreateEventPage() {
     }
   };
 
+  const [value, setValue] = useState("");
+  console.log(value);
   return (
     <div className="py-6 px-6 lg:px-8 text-left md:w-[600px] w-[90%] mx-auto flex flex-col">
+      <h1 className="text-2xl">test autocomplete</h1>
+
       <h3 className="text-gray-800 font-bold text-2xl mb-1">Create Event</h3>
       <br></br>
       <form className="spacy-y-6" onSubmit={handleSubmit}>
@@ -380,6 +385,7 @@ function CreateEventPage() {
           </div>
         </div>
         <br></br>
+
         <button
           type="submit"
           className="w-full text-white bg-purple-500 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
