@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import axios from "axios";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_API;
 
@@ -57,8 +58,29 @@ function Map() {
     }
   }, [lng, lat]); // Runs when lng or lat change
 
+  useEffect(() => {
+    const fetchEventsData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/events");
+        //console.log("mapResponse", response.data);
+        response.data.map((e) => {
+          const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+            e.event_name
+          );
+          const marker = new mapboxgl.Marker()
+            .setLngLat([e.lng, e.lat])
+            .setPopup(popup)
+            .addTo(map.current);
+        });
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    fetchEventsData();
+  }, []);
+
   return (
-    <div id="map" className="w-96 h-80 mb-6 top-[172px] sticky">
+    <div id="map" className="w-96 h-80 mb-6 top-[117px] sticky">
       <div ref={mapContainer} className="h-full" />
     </div>
   );

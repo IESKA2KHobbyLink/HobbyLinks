@@ -154,9 +154,12 @@ function Header() {
               placeholder="Osaka,Japan"
               value=""
             />
-            <button className="bg-purple-500 text-white py-[9px] px-4 rounded-r-md hover:bg-purple-600 ">
+            <Link
+              to={`/`}
+              className="bg-purple-500 text-white py-[9px] px-4 rounded-r-md hover:bg-purple-600 "
+            >
               <i className="fas fa-search"></i>
-            </button>
+            </Link>
           </div>
         </div>
         {/* if Login show create from */}
