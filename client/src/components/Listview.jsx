@@ -47,11 +47,17 @@ function Listview() {
 
     fetchGroupsData();
   }, []);
-
+  
+  // eventsという配列を回す,帰ってくる値は条件一致の配列がまとまって帰ってくる
+  // foreachみたいな機能
   const filteredEvents = events.filter(
     (event) =>
       event.event_name
+        // 文字を小文字にして返す
         .toLowerCase()
+        // （検索値）が小文字に変換され、前後の空白がトリム（削除）された後、
+        // 文字列に含まれているかどうかを判定する
+
         .includes(searchValue.toLowerCase().trim()) ||
       event.prefecture.toLowerCase().includes(searchValue.toLowerCase().trim())
   );
