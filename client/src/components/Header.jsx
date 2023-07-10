@@ -81,6 +81,7 @@ function Header() {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
+  //console.log(handleFileChange);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -162,9 +163,9 @@ function Header() {
           {user != null ? (
             <>
               <div className="flex gap-1">
-                <p className="text-gray-700 font-bold mr-2  text-center pt-2">
+                <Link to="/userProfile" className="text-gray-700 font-bold mr-2  text-center pt-2">
                   Welcome,{user.data.user_name}
-                </p>
+                </Link>
                 <Link
                   to="/createGroup"
                   className="border hover:border-b-purple-500 border-b-4 font-medium rounded-lg px-4 py-2 text-center"
