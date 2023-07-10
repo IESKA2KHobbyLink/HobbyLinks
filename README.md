@@ -43,6 +43,7 @@ php artisan key:generate
 php artisan migrate
 php artisan serve
 ```
-
-
-
+#### Server　サーバー開始
+```
+php artisan serve
+```
