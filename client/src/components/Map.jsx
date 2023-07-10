@@ -11,7 +11,6 @@ function Map() {
   const [lng, setLng] = useState(null);
   const [lat, setLat] = useState(null);
   const [zoom, setZoom] = useState(9);
-  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     // Get user's current lng lat
@@ -64,7 +63,15 @@ function Map() {
       try {
         const response = await axios.get("http://localhost:8000/api/events");
         //console.log("mapResponse", response.data);
-        setEvents(response.data);
+        response.data.map((e) => {
+          const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+            e.event_name
+          );
+          const marker = new mapboxgl.Marker()
+            .setLngLat([e.lng, e.lat])
+            .setPopup(popup)
+            .addTo(map.current);
+        });
       } catch (error) {
         console.error("Error fetching events:", error);
       }
