@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AddressAutofill } from "@mapbox/search-js-react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
+mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_API;
 
 function CreateEventPage() {
   const http = axios.create({
@@ -35,6 +40,88 @@ function CreateEventPage() {
   }, [user.data.user_id]);
 
   const [userCreatedGroups, setUserCreatedGroup] = useState([]); //fetch http://localhost:8000/api/user/{id}/created_groups
+
+  //geocoder stuff
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const geocoder = useRef(null);
+  const geocoderContainer = useRef(null);
+  const [lng, setLng] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [zoom, setZoom] = useState(9);
+
+  useEffect(() => {
+    // Get user's current lng lat
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by your browser");
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { longitude, latitude } = position.coords;
+
+          setLng(longitude);
+          setLat(latitude);
+        },
+        (error) => {
+          console.log("Error retrieving location:", error.message);
+        }
+      );
+    }
+  }, []); // Empty dependency array ensures this effect runs only once
+
+  useEffect(() => {
+    if (lng !== null && lat !== null && map.current === null) {
+      //new map instance
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: zoom,
+      });
+
+      //geocoder instance
+      geocoder.current = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        marker: {
+          color: "orange",
+        },
+        mapboxgl: mapboxgl,
+      });
+
+      geocoderContainer.current.appendChild(
+        geocoder.current.onAdd(map.current)
+      );
+      // Apply custom styling to the input element
+      const inputElement = geocoderContainer.current.querySelector(
+        ".mapboxgl-ctrl-geocoder input"
+      );
+
+      //get Json output from geocoder
+      geocoder.current.on("result", (event) => {
+        const lnglat = event.result.center;
+        const address = event.result.place_name;
+        console.log(lnglat); // 0 : lng, 1 : lat
+        console.log(address); // address
+      });
+
+      map.current.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+          showUserHeading: true,
+        }),
+        "top-right"
+      );
+
+      map.current.on("move", () => {
+        setLng(map.current.getCenter().lng.toFixed(4));
+        setLat(map.current.getCenter().lat.toFixed(4));
+        setZoom(map.current.getZoom().toFixed(2));
+      });
+    }
+  }, [lng, lat]); // Runs when lng or lat change
 
   //From Input State
   const user_id = user.data.user_id;
@@ -82,12 +169,8 @@ function CreateEventPage() {
     }
   };
 
-  const [value, setValue] = useState("");
-  console.log(value);
   return (
     <div className="py-6 px-6 lg:px-8 text-left md:w-[600px] w-[90%] mx-auto flex flex-col">
-      <h1 className="text-2xl">test autocomplete</h1>
-
       <h3 className="text-gray-800 font-bold text-2xl mb-1">Create Event</h3>
       <br></br>
       <form className="spacy-y-6" onSubmit={handleSubmit}>
@@ -241,7 +324,8 @@ function CreateEventPage() {
             />
           </div>
         </div>
-        <div>
+
+        {/* <div>
           <label
             htmlFor="address"
             className="block mb-2 text-sm font-medium text-grey-900"
@@ -250,7 +334,7 @@ function CreateEventPage() {
           </label>
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
             <svg
-              className="h-5 w-5 text-gray-500"
+               className="h-5 w-5 text-gray-500"
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -278,7 +362,15 @@ function CreateEventPage() {
               required
             />
           </div>
+        </div> */}
+
+        <div ref={geocoderContainer}></div>
+
+        {/* Map */}
+        <div id="map" className="w-full h-44 mb-6 ">
+          <div ref={mapContainer} className="h-full rounded-lg" />
         </div>
+
         <div>
           <label
             htmlFor="type"
