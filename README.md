@@ -15,7 +15,7 @@ HOBBYLINKS は　同じ趣味興味や趣味を持つ人々のための、対面
 
 リポジトリをクローンしてください。
 ```
-git clone https://github.com/your-username/hobbylinks.git
+git clone https://github.com/IESKA2KHobbyLink/HobbyLinks.git
 ```
 ## Client
 #### Clientの環境構築
