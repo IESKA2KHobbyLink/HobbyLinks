@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('event_name', 250);
             $table->string('prefecture', 100);
             $table->string('address', 100);
+            $table->float('lng', 13, 10)->nullable();
+            $table->float('lat', 13, 10)->nullable();
             $table->integer('created_by')->unsigned(); //userID参照
             $table->integer('group_id')->unsigned(); //groupID参照
             $table->string('type');

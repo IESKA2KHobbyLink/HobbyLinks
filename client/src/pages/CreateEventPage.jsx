@@ -102,6 +102,8 @@ function CreateEventPage() {
         const address = event.result.place_name;
         console.log(lnglat); // 0 : lng, 1 : lat
         console.log(address); // address
+        setAddress(address);
+        setLngLat(lnglat);
       });
 
       map.current.addControl(
@@ -132,7 +134,7 @@ function CreateEventPage() {
   const [desc, setDesc] = useState("");
   const [type, setType] = useState("");
   const [group_id, setGroup_id] = useState("");
-
+  const [lnglat, setLngLat] = useState([]);
   const [file, setFile] = useState(undefined);
 
   const handleFileChange = (event) => {
@@ -153,6 +155,8 @@ function CreateEventPage() {
       formData.append("type", type);
       formData.append("image", file);
       formData.append("group_id", group_id);
+      formData.append("lng", lnglat[0]);
+      formData.append("lat", lnglat[1]);
 
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import axios from "axios";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_API;
 
@@ -10,6 +11,7 @@ function Map() {
   const [lng, setLng] = useState(null);
   const [lat, setLat] = useState(null);
   const [zoom, setZoom] = useState(9);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     // Get user's current lng lat
@@ -56,6 +58,19 @@ function Map() {
       });
     }
   }, [lng, lat]); // Runs when lng or lat change
+
+  useEffect(() => {
+    const fetchEventsData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/events");
+        //console.log("mapResponse", response.data);
+        setEvents(response.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    fetchEventsData();
+  }, []);
 
   return (
     <div id="map" className="w-96 h-80 mb-6 top-[117px] sticky">

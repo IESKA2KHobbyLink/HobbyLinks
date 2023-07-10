@@ -49,6 +49,8 @@ class EventController extends Controller
             'prefecture' => $validatedData['prefecture'],
             'address' => $validatedData['address'],
             'date' => $validatedData['date'],
+            'lat' => $request->lat,
+            'lng' => $request->lng
         ]);
         $file = $request->file('image');
 

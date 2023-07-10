@@ -22,10 +22,7 @@ function EventItem({
       <div className="flex flex-col justify-start pt-2 px-4">
         <h2 className="text-md font-semibold text-amber-500">{date}</h2>
         <h5 className="mb-1 text-xl font-medium text-neutral-800 ">{title}</h5>
-        <p className="text-base text-neutral-600">
-          {desc} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Obcaecati enim quidem cumque, recusandae repellat ipsa iusto commodi
-        </p>
+        <p className="text-base text-neutral-600">{desc}</p>
 
         <p className="text-md text-neutral-400 font-semibold text-left">
           {group_name}
