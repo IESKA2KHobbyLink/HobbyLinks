@@ -31,6 +31,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/user/{id}/created_groups', [UserController::class, 'queryUsercreatedGroups']); //query user created groups
+Route::get('/user/{id}/created_events', [UserController::class,'queryUsercreatedEvents']); //query user created events
 
 
 //Auth Routes
