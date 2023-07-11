@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import UserProfile from "./pages/UserProfile";
 
 import { SearchProvider } from "./components/SearchContext";
-import Map from "./components/Map";
 
 function App() {
   return (
@@ -16,12 +15,12 @@ function App() {
       <SearchProvider>
         <Header />
         <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/group/:groupId" element={<GroupPage />} />
-          <Route path="/event/:eventId" element={<EventPage />} />
-          <Route path="/createEvent" element={<CreateEventPage />} />
-          <Route path="/createGroup" element={<CreateGroupPage />} />
-          <Route path="/userProfile" element={<UserProfile />} />
+          <Route path='/' element={<MainPage />} />
+          <Route path='/group/:groupId' element={<GroupPage />} />
+          <Route path='/event/:eventId' element={<EventPage />} />
+          <Route path='/createEvent' element={<CreateEventPage />} />
+          <Route path='/createGroup' element={<CreateGroupPage />} />
+          <Route path='/userProfile' element={<UserProfile />} />
         </Routes>
       </SearchProvider>
     </BrowserRouter>
