@@ -5,12 +5,15 @@ import EventPage from "./pages/EventPage";
 import CreateEventPage from "./pages/CreateEventPage";
 import CreateGroupPage from "./pages/CreateGroupPage";
 import Header from "./components/Header";
+import UserProfile from "./pages/UserProfile";
+
 import { SearchProvider } from "./components/SearchContext";
 import Map from "./components/Map";
 
 function App() {
   return (
     <BrowserRouter>
+
       <SearchProvider>
         <Header />
         <Routes>
