@@ -13,7 +13,6 @@ import Map from "./components/Map";
 function App() {
   return (
     <BrowserRouter>
-
       <SearchProvider>
         <Header />
         <Routes>
@@ -22,6 +21,7 @@ function App() {
           <Route path="/event/:eventId" element={<EventPage />} />
           <Route path="/createEvent" element={<CreateEventPage />} />
           <Route path="/createGroup" element={<CreateGroupPage />} />
+          <Route path="/userProfile" element={<UserProfile />} />
         </Routes>
       </SearchProvider>
     </BrowserRouter>

@@ -1,10 +1,9 @@
-import React, { useState ,useEffect, Fragment} from 'react';
-import JoinedEvent from '../components/userProfile/JoinedEvent';
-import JoinedGroup from '../components/userProfile/JoinedGroup';
-import UserAbout from '../components/userProfile/UserAbout';
+import React, { useState, useEffect, Fragment } from "react";
+import JoinedEvent from "../components/userProfile/JoinedEvent";
+import JoinedGroup from "../components/userProfile/JoinedGroup";
+import UserAbout from "../components/userProfile/UserAbout";
 import axios from "axios";
-import Modal from '../components/Modal';
-
+import Modal from "../components/Modal";
 
 function UserProfile() {
   const http = axios.create({
@@ -34,7 +33,6 @@ function UserProfile() {
         );
 
         setUserDetails(response.data);
-  
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
@@ -50,7 +48,6 @@ function UserProfile() {
         );
 
         setGroupDetails(response.data);
-  
       } catch (error) {
         console.error("Error fetching group details:", error);
       }
@@ -66,7 +63,6 @@ function UserProfile() {
         );
 
         setEventDetails(response.data);
-  
       } catch (error) {
         console.error("Error fetching event details:", error);
       }
@@ -74,29 +70,34 @@ function UserProfile() {
     fetchEvent();
   }, []);
 
-  const handleFileChange = (event) => {
+  const handleAvatarFileChange = (event) => {
     setImgAvatar(event.target.files[0]);
   };
 
-  const handleRegister = async (e) => {
+  const handleBackgroundFileChange = (event) => {
+    setImgBackground(event.target.files[0]);
+  };
+
+  const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
       //setLoading(true);
       const formData = new FormData();
-      
+      formData.append("_method", "PUT");
       formData.append("image", imgAvatar);
-      formData.append('_method','PUT');
+      formData.append("bg_img", imgBackground);
+
       //formData.append("imgBackground", imgBackground);
 
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
       }
 
-      const register = await http.post(
+      const update = await http.post(
         `http://localhost:8000/api/users/${currentUserId}`,
         formData
       );
-      console.log("Registration successful", register);
+      console.log("Registration successful", update);
 
       const user = await http.get("/api/user");
       const current = localStorage.setItem("currentUser", JSON.stringify(user));
@@ -105,7 +106,6 @@ function UserProfile() {
 
       setImgAvatar(undefined);
       //setImgBackground(undefined);
-      
     } catch (error) {
       console.error("Register failed:", error);
     }
@@ -134,33 +134,62 @@ function UserProfile() {
             </div>
           </div>
           <div className="text-center mt-6 text-3xl font-bold text-fBlack">
-          {userDetails.user_name}
+            {userDetails.user_name}
           </div>
           <div className="flex justify-between px-8">
             <div className="flex items-center">
-              <div onClick={() => setActive("UserAbout")} className={`cursor-pointer px-4 py-5 text-gray-700 ${active === "UserAbout" ? 'text-purple-500 border-b-4 border-purple-500' : ''}`}>
+              <div
+                onClick={() => setActive("UserAbout")}
+                className={`cursor-pointer px-4 py-5 text-gray-700 ${
+                  active === "UserAbout"
+                    ? "text-purple-500 border-b-4 border-purple-500"
+                    : ""
+                }`}
+              >
                 About
               </div>
-              <div onClick={() => setActive("JoinedGroup")} className={`cursor-pointer px-4 py-5 text-gray-700 ${active === "JoinedGroup" ? 'text-purple-500 border-b-4 border-purple-500' : ''}`}>
-                Groups <span className="text-sm ml-1">{groupDetails.length}</span>
+              <div
+                onClick={() => setActive("JoinedGroup")}
+                className={`cursor-pointer px-4 py-5 text-gray-700 ${
+                  active === "JoinedGroup"
+                    ? "text-purple-500 border-b-4 border-purple-500"
+                    : ""
+                }`}
+              >
+                Groups{" "}
+                <span className="text-sm ml-1">{groupDetails.length}</span>
               </div>
-              <div onClick={() => setActive("JoinedEvent")} className={`cursor-pointer px-4 py-5 text-gray-700 ${active === "JoinedEvent" ? 'text-purple-500 border-b-4 border-purple-500' : ''}`}>
-                Events <span className="text-sm ml-1">{eventDetails.length}</span>
+              <div
+                onClick={() => setActive("JoinedEvent")}
+                className={`cursor-pointer px-4 py-5 text-gray-700 ${
+                  active === "JoinedEvent"
+                    ? "text-purple-500 border-b-4 border-purple-500"
+                    : ""
+                }`}
+              >
+                Events{" "}
+                <span className="text-sm ml-1">{eventDetails.length}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div>
-          {active === "UserAbout" && <UserAbout userDetails={userDetails}/>}
-          {active === "JoinedGroup" && <JoinedGroup groupDetails={groupDetails}/>}
-          {active === "JoinedEvent" && <JoinedEvent eventDetails={eventDetails}/>}
+          {active === "UserAbout" && <UserAbout userDetails={userDetails} />}
+          {active === "JoinedGroup" && (
+            <JoinedGroup groupDetails={groupDetails} />
+          )}
+          {active === "JoinedEvent" && (
+            <JoinedEvent eventDetails={eventDetails} />
+          )}
         </div>
         <Modal isVisible={imgAvatar} onClose={() => setImgAvatar(false)}>
           <div className="py-6 px-6 lg:px-8 text-left">
-            <h3 className="text-gray-800 font-bold text-2xl mb-1">Change Avatar Photo</h3>
+            <h3 className="text-gray-800 font-bold text-2xl mb-1">
+              Change Avatar Photo
+            </h3>
             <br></br>
-            <form className="spacy-y-6" onSubmit={handleRegister}>
+            <form className="spacy-y-6" onSubmit={handleUpdateProfile}>
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2 ">
                 <svg
                   className="h-5 w-5 text-gray-500"
@@ -180,7 +209,7 @@ function UserProfile() {
                   type="file"
                   name="image"
                   id="image"
-                  onChange={handleFileChange}
+                  onChange={handleAvatarFileChange}
                   className="boder border-gray-300 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
                 />
               </div>
@@ -194,11 +223,16 @@ function UserProfile() {
             </form>
           </div>
         </Modal>
-        <Modal isVisible={imgBackground} onClose={() => setImgBackground(false)}>
+        <Modal
+          isVisible={imgBackground}
+          onClose={() => setImgBackground(false)}
+        >
           <div className="py-6 px-6 lg:px-8 text-left">
-            <h3 className="text-gray-800 font-bold text-2xl mb-1">Change Background Photo</h3>
+            <h3 className="text-gray-800 font-bold text-2xl mb-1">
+              Change Background Photo
+            </h3>
             <br></br>
-            <form className="spacy-y-6">
+            <form className="spacy-y-6" onSubmit={handleUpdateProfile}>
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2 ">
                 <svg
                   className="h-5 w-5 text-gray-500"
@@ -218,7 +252,7 @@ function UserProfile() {
                   type="file"
                   name="imgBackground"
                   id="imgBackground"
-                  // onChange={handleFileChange}
+                  onChange={handleBackgroundFileChange}
                   className="boder border-gray-300 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
                 />
               </div>
