@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EventHeader from "../components/eventComponents/EventHeader";
 import EventDesc from "../components/eventComponents/EventDesc";
+import AttendeesSection from "../components/eventComponents/AttendeesSection";
 import axios from "axios";
 
 function EventPage() {
   const { eventId } = useParams();
+
   const [eventDetails, setEventDetails] = useState({
     imgUrl: "",
     title: "",
@@ -15,10 +17,14 @@ function EventPage() {
     date: "",
     prefecture: "",
     created_by: "",
+    group_name: "",
+    group_id: "",
     eventId: eventId,
+    owner: "",
   });
 
-  const [user, setUser] = useState("");
+  //logged in user
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
     const fetchEventsData = async () => {
@@ -36,29 +42,36 @@ function EventPage() {
           type: response.data.type,
           prefecture: response.data.prefecture,
           created_by: response.data.created_by,
+          group_name: response.data.group_name,
+          group_id: response.data.group_id,
           date: response.data.date,
+          owner: response.data.owner,
         });
       } catch (error) {
         console.error("Error fetching group details:", error);
       }
     };
 
-    const fetchUser = async () => {
+    fetchEventsData();
+  }, [eventId]);
+
+  //fetch attendees
+  const [attendees, setAttendees] = useState([]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/users/${eventDetails.created_by}`
+          `http://localhost:8000/api/events/${eventId}/users`
         );
-        setUser(response.data.user_name);
+        setAttendees(response.data);
       } catch (error) {
-        console.error("Error fetching user details:", error);
+        console.error("Error fetching attendees:", error);
       }
     };
 
-    fetchEventsData();
-    if (eventDetails.created_by) {
-      fetchUser();
-    }
-  }, [eventId, eventDetails.created_by]);
+    fetchMembers();
+  }, [eventId]);
 
   return (
     <>
@@ -67,7 +80,13 @@ function EventPage() {
           <EventHeader
             imgUrl={eventDetails.imgUrl}
             title={eventDetails.title}
-            user={user}
+            group_name={eventDetails.group_name}
+            group_id={eventDetails.group_id}
+            currentUser={currentUser}
+            eventId={eventId}
+            attendees={attendees}
+            setAttendees={setAttendees}
+            owner={eventDetails.owner}
           />
 
           <EventDesc
@@ -77,6 +96,12 @@ function EventPage() {
             type={eventDetails.type}
             prefecture={eventDetails.prefecture}
             date={eventDetails.date}
+          />
+
+          <AttendeesSection
+            eventId={eventId}
+            attendees={attendees}
+            currentUser={currentUser}
           />
         </div>
       </div>

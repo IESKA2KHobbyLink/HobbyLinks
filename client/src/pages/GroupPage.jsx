@@ -26,9 +26,8 @@ function GroupPage() {
     prefecture: "",
     groupId: groupId,
     created_by: "",
+    memberCount: "",
   });
-
-  const [user, setuser] = useState(""); // for created by
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -46,37 +45,20 @@ function GroupPage() {
           groupId: groupId,
           events: response.data.events,
           imgUrl: response.data.header_path,
-          created_by: response.data.created_by,
+          created_by: response.data.owner,
+          memberCount: response.data.memberCount,
         });
       } catch (error) {
         console.error("Error fetching group details:", error);
       }
     };
 
-    //fetch for created_by  fix response in Backend Later
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/users/${groupDetails.created_by}`
-        );
-        setuser(response.data);
-
-        if (currentUser.data.user_id === groupDetails.created_by) {
-          setJoined(true);
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-
     fetchGroupData();
-    if (groupDetails.created_by) {
-      fetchUser();
-    }
-  }, [groupId, groupDetails.created_by]);
+  }, [groupId]);
 
   //handle Join group btn
   const [joined, setJoined] = useState(false);
+
   //check if current user is in group if true setJoined to true
   const currentUserInGroup = async () => {
     try {
@@ -94,6 +76,7 @@ function GroupPage() {
       console.error(error);
     }
   };
+
   useEffect(() => {
     currentUserInGroup();
   }, []);
@@ -159,7 +142,6 @@ function GroupPage() {
 
   //fetch memeber
   const [members, setMembers] = useState([]);
-  const membersCount = members.length;
   useEffect(() => {
     const fetchMembers = async () => {
       try {
@@ -186,9 +168,9 @@ function GroupPage() {
             groupId={groupId}
             imgUrl={groupDetails.imgUrl}
             title={groupDetails.title}
-            user={user.user_name}
             prefecture={groupDetails.prefecture}
-            membersCount={membersCount}
+            memberCount={groupDetails.memberCount}
+            created_by={groupDetails.created_by}
           />
 
           <div className="flex mt-10 ">

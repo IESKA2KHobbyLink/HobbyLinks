@@ -12,7 +12,8 @@ function GroupHeader({
   groupId,
   user,
   prefecture,
-  membersCount,
+  memberCount,
+  created_by,
 }) {
   const imgPath = `http://localhost:8000${imgUrl}`;
   return (
@@ -30,11 +31,11 @@ function GroupHeader({
           </div>
           <div className="flex ">
             <FontAwesomeIcon icon={faUserGroup} />
-            <p className="pl-[9px] font-normal">{membersCount} Members</p>
+            <p className="pl-[9px] font-normal">{memberCount} Members</p>
           </div>
           <div className="flex ">
             <FontAwesomeIcon icon={faUser} />
-            <p className="pl-[14px] font-normal">Created by : {user}</p>
+            <p className="pl-[14px] font-normal">Created by : {created_by}</p>
           </div>
         </div>
       </div>

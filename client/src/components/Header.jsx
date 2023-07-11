@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-//import { Fragment, useState } from "react";
 import Modal from "./Modal";
 import axios from "axios";
+import { SearchContext } from "./SearchContext";
 
 function Header() {
   const http = axios.create({
@@ -14,10 +14,10 @@ function Header() {
   });
 
   //handle search
-  const [inputValue, setInputValue] = useState("");
+  const { searchValue, handleSearchChange } = useContext(SearchContext);
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    handleSearchChange(e.target.value);
   };
 
   //show login form || register form
@@ -65,7 +65,10 @@ function Header() {
       setUser(null);
       navigate(`/`);
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Request failed:", error);
+      localStorage.removeItem("currentUser");
+      setUser(null);
+      navigate(`/`);
     }
   };
 
@@ -143,18 +146,21 @@ function Header() {
               type="text"
               placeholder="Search..."
               className="py-2 px-4 border border-gray-300 rounded-l-md focus:outline-none"
-              value={inputValue}
+              value={searchValue}
               onChange={handleInputChange}
             />
             <input
               type="text"
               className="py-2 px-4 border  border-gray-300 focus:outline-none"
-              value={inputValue}
-              onChange={handleInputChange}
+              placeholder="Osaka,Japan"
+              value=""
             />
-            <button className="bg-purple-500 text-white py-[9px] px-4 rounded-r-md hover:bg-purple-600 ">
+            <Link
+              to={`/`}
+              className="bg-purple-500 text-white py-[9px] px-4 rounded-r-md hover:bg-purple-600 "
+            >
               <i className="fas fa-search"></i>
-            </button>
+            </Link>
           </div>
         </div>
         {/* if Login show create from */}
@@ -168,21 +174,21 @@ function Header() {
                 </Link>
                 <Link
                   to="/createGroup"
-                  className="border hover:border-b-purple-500 border-b-4 font-medium rounded-lg px-4 py-2 text-center"
+                  className="border hover:border-b-purple-500 border-b-4 font-medium rounded-lg px-4 py-2 text-center h-10 "
                 >
                   Create Group
                 </Link>
 
                 <Link
                   to="/createEvent"
-                  className="border hover:border-b-purple-500 border-b-4 font-medium rounded-lg px-4 py-2 text-center"
+                  className="border hover:border-b-purple-500 border-b-4 font-medium rounded-lg px-4 py-2 text-center h-10"
                 >
                   Create Event
                 </Link>
 
                 <button
                   className=" border hover:border-purple-500  border-b-4 border-r-4 font-medium rounded-lg  px-4 py-2 
-                  text-center "
+                  text-center h-10 "
                   onClick={handleLogout}
                 >
                   Logout

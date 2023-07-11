@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\EManage;
+use App\Models\Group;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,6 +15,12 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
+        foreach ($events as $event) {
+            $users = EManage::where('event_id', $event->event_id)->get();
+            $groupName = Group::find($event->group_id)->group_name;
+            $event->attendeeCount = count($users);
+            $event->group_name =  $groupName;
+        }
         return response()->json($events, 200);
     }
 
@@ -41,6 +49,8 @@ class EventController extends Controller
             'prefecture' => $validatedData['prefecture'],
             'address' => $validatedData['address'],
             'date' => $validatedData['date'],
+            'lat' => $request->lat,
+            'lng' => $request->lng
         ]);
         $file = $request->file('image');
 
@@ -69,6 +79,11 @@ class EventController extends Controller
     public function show(string $id)
     {
         $events = Event::find($id);
+        $group = Group::find($events->group_id);
+        $groupName = $group->group_name;
+        $events->group_name = $groupName;
+        $userName = User::find($events->created_by)->user_name;
+        $events->owner = $userName;
         return response()->json($events, 200);
     }
 
@@ -84,5 +99,19 @@ class EventController extends Controller
         $events = Event::find($id);
         $events->delete();
         return response()->json(null, 204);
+    }
+
+    public function search(Request $request)
+    {
+        // 検索条件をリクエストから取得
+        $keyword = $request->input('keyword');
+
+        // 検索ロジックの実装
+        $results = Event::where('group_name', 'like', '%' . $keyword . '%')->get();
+
+        // 必要な場合は認証や権限管理をチェック
+
+        // 検索結果を返す
+        return response()->json($results);
     }
 }

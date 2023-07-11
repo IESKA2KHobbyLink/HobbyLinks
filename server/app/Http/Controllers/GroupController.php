@@ -14,6 +14,10 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
+        foreach ($groups as $group) {
+            $users = GManage::where('group_id', $group->group_id)->get();
+            $group->memberCount = count($users);
+        }
         return response()->json($groups, 200);
     }
 
@@ -64,8 +68,11 @@ class GroupController extends Controller
     public function show(string $id)
     {
         $group = Group::find($id);
-        // $user = User::find($group->created_by);
-        // $userName = $user->user_name;
+        $user = User::find($group->created_by);
+        $group->owner = $user->user_name;
+        $users = GManage::where('group_id', $group->group_id)->get();
+        $group->memberCount = count($users);
+
         return response()->json($group, 200);
     }
 
@@ -81,5 +88,20 @@ class GroupController extends Controller
         $group = Group::find($id);
         $group->delete();
         return response()->json(null, 204);
+    }
+
+    //検索メソッド
+    public function search(Request $request)
+    {
+        // 検索条件をリクエストから取得
+        $keyword = $request->input('keyword');
+
+        // 検索ロジックの実装
+        $results = Group::where('group_name', 'like', '%' . $keyword . '%')->get();
+
+        // 必要な場合は認証や権限管理をチェック
+
+        // 検索結果を返す
+        return response()->json($results);
     }
 }

@@ -18,7 +18,9 @@ class E_manageController extends Controller
         ]);
 
         $emanage =  EManage::create($validatedData);
-        return response()->json(['message' => 'User added to event successfully', 'emanage' => $emanage], 200);
+        $userIds = $emanage->user_id;
+        $usersData = User::find($userIds); // Retrieve users from the 'users' table
+        return response()->json(['message' => 'User added to event successfully', 'emanage' => $emanage, 'usersData' => $usersData], 200);
     }
 
     public function removeUserFromEvent(Request $request)

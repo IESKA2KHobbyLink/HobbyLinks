@@ -7,19 +7,23 @@ import CreateGroupPage from "./pages/CreateGroupPage";
 import Header from "./components/Header";
 import UserProfile from "./pages/UserProfile";
 
+import { SearchProvider } from "./components/SearchContext";
+import Map from "./components/Map";
 
 function App() {
   return (
     <BrowserRouter>
-      <Header />
-      <Routes>
-      <Route path='/' element={<MainPage />} />
-        <Route path='/group/:groupId' element={<GroupPage />} />
-        <Route path='/event/:eventId' element={<EventPage />} />
-        <Route path='/createEvent' element={<CreateEventPage />} />
-        <Route path='/createGroup' element={<CreateGroupPage />} />
-        <Route path='/userProfile' element={<UserProfile />} />
-      </Routes>
+
+      <SearchProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/group/:groupId" element={<GroupPage />} />
+          <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/createEvent" element={<CreateEventPage />} />
+          <Route path="/createGroup" element={<CreateGroupPage />} />
+        </Routes>
+      </SearchProvider>
     </BrowserRouter>
   );
 }
