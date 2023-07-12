@@ -71,7 +71,7 @@ class UserController extends Controller
 
             $publicPath = Storage::url($path);
 
-            $user->profile_Pic = $publicPath;
+            $user->header_pic = $publicPath;
 
             $user->save();
         }
@@ -125,7 +125,7 @@ class UserController extends Controller
 
         if ($request->hasFile('bg_img')) {
             $rules = [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
+                'bg_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
             ];
 
             $file = $request->file('bg_img');
@@ -140,7 +140,7 @@ class UserController extends Controller
 
             $publicPath = Storage::url($path);
 
-            $user->profile_Pic = $publicPath;
+            $user->header_pic = $publicPath;
 
             $user->save();
         }
