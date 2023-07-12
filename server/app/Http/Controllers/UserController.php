@@ -54,6 +54,28 @@ class UserController extends Controller
             $user->save();
         }
 
+        if ($request->hasFile('bg_img')) {
+            $rules = [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
+            ];
+
+            $file = $request->file('bg_img');
+
+            $request->validate($rules);
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $disk = 'local';
+
+            $path = $file->storeAs('public/images/profile_banner', $fileName, $disk);
+
+            $publicPath = Storage::url($path);
+
+            $user->header_pic = $publicPath;
+
+            $user->save();
+        }
+
 
         return response()->json($user, 201);
     }
@@ -100,6 +122,29 @@ class UserController extends Controller
 
             $user->save();
         }
+
+        if ($request->hasFile('bg_img')) {
+            $rules = [
+                'bg_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
+            ];
+
+            $file = $request->file('bg_img');
+
+            $request->validate($rules);
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $disk = 'local';
+
+            $path = $file->storeAs('public/images/profile_banner', $fileName, $disk);
+
+            $publicPath = Storage::url($path);
+
+            $user->header_pic = $publicPath;
+
+            $user->save();
+        }
+
 
         $user->fill($request->all()); // Use fill() instead of update() to assign the values
 

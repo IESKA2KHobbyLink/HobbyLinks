@@ -1,12 +1,13 @@
-import React, { useState ,useEffect, Fragment} from 'react';
-import JoinedEvent from '../components/userProfile/JoinedEvent';
-import JoinedGroup from '../components/userProfile/JoinedGroup';
-import UserAbout from '../components/userProfile/UserAbout';
+import React, { useState, useEffect, Fragment } from "react";
+import JoinedEvent from "../components/userProfile/JoinedEvent";
+import JoinedGroup from "../components/userProfile/JoinedGroup";
+import UserAbout from "../components/userProfile/UserAbout";
 import axios from "axios";
-import Modal from '../components/Modal';
-
+import Modal from "../components/Modal";
+import { useParams } from "react-router-dom";
 
 function UserProfile() {
+  //axios config for POST
   const http = axios.create({
     baseURL: "http://localhost:8000",
     headers: {
@@ -14,6 +15,8 @@ function UserProfile() {
     },
     withCredentials: true,
   });
+
+  //const { groupId } = useParams(); //TODO: use dynamic route
 
   const [active, setActive] = useState("UserAbout");
   const [userDetails, setUserDetails] = useState([]);
@@ -24,8 +27,10 @@ function UserProfile() {
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const currentUserId = currentUser.data.user_id;
-  //console.log(userDetails);
 
+  //form submmit
+  const [isLoading, setLoading] = useState(false);
+  //FIX: if curret profile use the currentUser data
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -34,7 +39,6 @@ function UserProfile() {
         );
 
         setUserDetails(response.data);
-  
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
@@ -50,7 +54,6 @@ function UserProfile() {
         );
 
         setGroupDetails(response.data);
-  
       } catch (error) {
         console.error("Error fetching group details:", error);
       }
@@ -66,7 +69,6 @@ function UserProfile() {
         );
 
         setEventDetails(response.data);
-  
       } catch (error) {
         console.error("Error fetching event details:", error);
       }
@@ -74,52 +76,61 @@ function UserProfile() {
     fetchEvent();
   }, []);
 
-  const handleFileChange = (event) => {
+  const handleAvatarFileChange = (event) => {
     setImgAvatar(event.target.files[0]);
   };
 
-  const handleRegister = async (e) => {
+  const handleBackgroundFileChange = (event) => {
+    setImgBackground(event.target.files[0]);
+  };
+
+  const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      //setLoading(true);
+      setLoading(true); // Set loading state to true before update
       const formData = new FormData();
-      
+      formData.append("_method", "PUT");
       formData.append("image", imgAvatar);
-      formData.append('_method','PUT');
-      //formData.append("imgBackground", imgBackground);
+      formData.append("bg_img", imgBackground);
 
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
       }
 
-      const register = await http.post(
+      const update = await http.post(
         `http://localhost:8000/api/users/${currentUserId}`,
         formData
       );
-      console.log("Registration successful", register);
 
-      const user = await http.get("/api/user");
-      const current = localStorage.setItem("currentUser", JSON.stringify(user));
-      setUserDetails(user);
-      //setImgAvatar(false);
+      const user = await http.get(
+        `http://localhost:8000/api/users/${currentUserId}`
+      );
 
+      // Update the user details in the state
+      setUserDetails(user.data);
+      setLoading(false); // Set loading state to false after update
       setImgAvatar(undefined);
-      //setImgBackground(undefined);
-      
+      setImgBackground(undefined);
     } catch (error) {
-      console.error("Register failed:", error);
+      console.error("Profile update failed:", error);
+      setLoading(false); // Set loading state to false in case of error
     }
   };
 
-  const imgPath = `http://localhost:8000${userDetails.profile_Pic}`;
-  //console.log(userDetails.name);
+  const imgPath = `http://localhost:8000${userDetails.profile_pic}`;
+  const bgImgPath = `http://localhost:8000${userDetails.header_pic}`;
+
   return (
     <Fragment>
       <div>
         <div className="px-44 shadow">
           <div className="relative h-80 rounded-b flex justify-center">
             <img
-              src="https://i.pinimg.com/originals/b2/bf/45/b2bf45dd18a62018800974b0a6ca68f0.jpg"
+              src={
+                bgImgPath
+                  ? bgImgPath
+                  : "https://i.pinimg.com/originals/b2/bf/45/b2bf45dd18a62018800974b0a6ca68f0.jpg"
+              } //
               className="cursor-pointer object-cover w-full h-full rounded-b"
               alt="cover"
               onClick={() => setImgBackground(true)}
@@ -134,33 +145,62 @@ function UserProfile() {
             </div>
           </div>
           <div className="text-center mt-6 text-3xl font-bold text-fBlack">
-          {userDetails.user_name}
+            {userDetails.user_name}
           </div>
           <div className="flex justify-between px-8">
             <div className="flex items-center">
-              <div onClick={() => setActive("UserAbout")} className={`cursor-pointer px-4 py-5 text-gray-700 ${active === "UserAbout" ? 'text-purple-500 border-b-4 border-purple-500' : ''}`}>
+              <div
+                onClick={() => setActive("UserAbout")}
+                className={`cursor-pointer px-4 py-5 text-gray-700 ${
+                  active === "UserAbout"
+                    ? "text-purple-500 border-b-4 border-purple-500"
+                    : ""
+                }`}
+              >
                 About
               </div>
-              <div onClick={() => setActive("JoinedGroup")} className={`cursor-pointer px-4 py-5 text-gray-700 ${active === "JoinedGroup" ? 'text-purple-500 border-b-4 border-purple-500' : ''}`}>
-                Groups <span className="text-sm ml-1">{groupDetails.length}</span>
+              <div
+                onClick={() => setActive("JoinedGroup")}
+                className={`cursor-pointer px-4 py-5 text-gray-700 ${
+                  active === "JoinedGroup"
+                    ? "text-purple-500 border-b-4 border-purple-500"
+                    : ""
+                }`}
+              >
+                Groups{" "}
+                <span className="text-sm ml-1">{groupDetails.length}</span>
               </div>
-              <div onClick={() => setActive("JoinedEvent")} className={`cursor-pointer px-4 py-5 text-gray-700 ${active === "JoinedEvent" ? 'text-purple-500 border-b-4 border-purple-500' : ''}`}>
-                Events <span className="text-sm ml-1">{eventDetails.length}</span>
+              <div
+                onClick={() => setActive("JoinedEvent")}
+                className={`cursor-pointer px-4 py-5 text-gray-700 ${
+                  active === "JoinedEvent"
+                    ? "text-purple-500 border-b-4 border-purple-500"
+                    : ""
+                }`}
+              >
+                Events{" "}
+                <span className="text-sm ml-1">{eventDetails.length}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div>
-          {active === "UserAbout" && <UserAbout userDetails={userDetails}/>}
-          {active === "JoinedGroup" && <JoinedGroup groupDetails={groupDetails}/>}
-          {active === "JoinedEvent" && <JoinedEvent eventDetails={eventDetails}/>}
+          {active === "UserAbout" && <UserAbout userDetails={userDetails} />}
+          {active === "JoinedGroup" && (
+            <JoinedGroup groupDetails={groupDetails} />
+          )}
+          {active === "JoinedEvent" && (
+            <JoinedEvent eventDetails={eventDetails} />
+          )}
         </div>
         <Modal isVisible={imgAvatar} onClose={() => setImgAvatar(false)}>
           <div className="py-6 px-6 lg:px-8 text-left">
-            <h3 className="text-gray-800 font-bold text-2xl mb-1">Change Avatar Photo</h3>
+            <h3 className="text-gray-800 font-bold text-2xl mb-1">
+              Change Avatar Photo
+            </h3>
             <br></br>
-            <form className="spacy-y-6" onSubmit={handleRegister}>
+            <form className="spacy-y-6" onSubmit={handleUpdateProfile}>
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2 ">
                 <svg
                   className="h-5 w-5 text-gray-500"
@@ -180,7 +220,7 @@ function UserProfile() {
                   type="file"
                   name="image"
                   id="image"
-                  onChange={handleFileChange}
+                  onChange={handleAvatarFileChange}
                   className="boder border-gray-300 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
                 />
               </div>
@@ -188,17 +228,23 @@ function UserProfile() {
               <button
                 type="submit"
                 className="w-full text-white bg-purple-500 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                disabled={isLoading}
               >
-                Save
+                {isLoading ? "Saving..." : "Save"}
               </button>
             </form>
           </div>
         </Modal>
-        <Modal isVisible={imgBackground} onClose={() => setImgBackground(false)}>
+        <Modal
+          isVisible={imgBackground}
+          onClose={() => setImgBackground(false)}
+        >
           <div className="py-6 px-6 lg:px-8 text-left">
-            <h3 className="text-gray-800 font-bold text-2xl mb-1">Change Background Photo</h3>
+            <h3 className="text-gray-800 font-bold text-2xl mb-1">
+              Change Background Photo
+            </h3>
             <br></br>
-            <form className="spacy-y-6">
+            <form className="spacy-y-6" onSubmit={handleUpdateProfile}>
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2 ">
                 <svg
                   className="h-5 w-5 text-gray-500"
@@ -216,9 +262,9 @@ function UserProfile() {
 
                 <input
                   type="file"
-                  name="imgBackground"
-                  id="imgBackground"
-                  // onChange={handleFileChange}
+                  name="bg_img"
+                  id="bg_img"
+                  onChange={handleBackgroundFileChange}
                   className="boder border-gray-300 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
                 />
               </div>
@@ -227,7 +273,7 @@ function UserProfile() {
                 type="submit"
                 className="w-full text-white bg-purple-500 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
-                Save
+                {isLoading ? "Saving..." : "Save"}
               </button>
             </form>
           </div>
