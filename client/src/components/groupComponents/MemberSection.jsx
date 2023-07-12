@@ -10,7 +10,7 @@ function MemberSection({ groupId, members }) {
             key={member.user_id}
             name={member.user_name}
             email={member.email}
-            img={`http://localhost:8000${member.profile_Pic}`}
+            img={`http://localhost:8000${member.profile_pic}`}
           />
         ))}
       </div>
