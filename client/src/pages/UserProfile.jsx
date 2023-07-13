@@ -129,8 +129,8 @@ function UserProfile() {
             <img
               src={
                 bgImgPath
-                  ? bgImgPath
-                  : "https://i.pinimg.com/originals/b2/bf/45/b2bf45dd18a62018800974b0a6ca68f0.jpg"
+                  ? "https://i.pinimg.com/originals/b2/bf/45/b2bf45dd18a62018800974b0a6ca68f0.jpg"
+                  : bgImgPath
               } //
               className="cursor-pointer object-cover w-full h-full rounded-b"
               alt="cover"
@@ -140,7 +140,12 @@ function UserProfile() {
             />
             <div className="absolute -bottom-6 card flex justify-content-center">
               <img
-                src={imgPath}
+                src=""
+                // {
+                //   imgPath == "http://localhost:8000null"
+                //     ? placeHolderImg
+                //     : imgPath
+                // }
                 className="cursor-pointer object-cover border-4 border-white w-40 h-40 rounded-full"
                 alt="avatar"
                 onClick={() => {

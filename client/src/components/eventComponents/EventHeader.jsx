@@ -14,6 +14,10 @@ export default function EventHeader({
   owner,
 }) {
   const imgPath = `http://localhost:8000${imgUrl}`;
+  //fix owner res in backend
+  const nameSplit = owner.split(" ");
+  const placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
+
   const http = axios.create({
     baseURL: "http://localhost:8000",
     headers: {
@@ -27,7 +31,9 @@ export default function EventHeader({
   //check if current user is in group if true setJoined to true
   const currentUserInGroup = async () => {
     try {
-      const res = await http.get(`http://localhost:8000/api/events/${eventId}/users`);
+      const res = await http.get(
+        `http://localhost:8000/api/events/${eventId}/users`
+      );
       const attendees = res.data;
 
       const currentUserExists = attendees.some(
@@ -56,12 +62,17 @@ export default function EventHeader({
         formData.append("event_id", eventId);
         formData.append("group_id", group_id);
         formData.append("user_id", currentUser.data.user_id);
-        const res = await http.post(`http://localhost:8000/api/events/${eventId}/users`, formData);
+        const res = await http.post(
+          `http://localhost:8000/api/events/${eventId}/users`,
+          formData
+        );
         console.log("Remove User from event", res);
 
         // Update the attendees state by removing the current user
         setAttendees((prevMembers) =>
-          prevMembers.filter((member) => member.user_id !== currentUser.data.user_id)
+          prevMembers.filter(
+            (member) => member.user_id !== currentUser.data.user_id
+          )
         );
       }
     } catch (error) {
@@ -79,7 +90,10 @@ export default function EventHeader({
         formData.append("event_id", eventId);
         formData.append("user_id", currentUser.data.user_id);
         formData.append("group_id", group_id);
-        const res = await http.post(`http://localhost:8000/api/events/${eventId}/users`, formData);
+        const res = await http.post(
+          `http://localhost:8000/api/events/${eventId}/users`,
+          formData
+        );
         console.log("Add User to event", res);
 
         const newMember = res.data.usersData;
@@ -105,20 +119,24 @@ export default function EventHeader({
   };
 
   return (
-    <div className='mx-auto'>
-      <div className='mt-2'>
-        <h1 className='text-md font-medium text-amber-600'>{group_name}</h1>
-        <h1 className='text-3xl font-medium'>{title}</h1>
-        <div className='flex justify-between my-2'>
+    <div className="mx-auto">
+      <div className="mt-2">
+        <h1 className="text-md font-medium text-amber-600">{group_name}</h1>
+        <h1 className="text-3xl font-medium">{title}</h1>
+        <div className="flex justify-between my-2">
           <div>
-            <div className=' py-2 flex gap-1 max-w-sm items-center'>
+            <div className=" py-2 flex gap-1 max-w-sm items-center">
               <img
-                className='w-14 h-14 rounded-full border-4 border-slate-50 object-cover'
-                src='https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg'
+                className="w-14 h-14 rounded-full border-4 border-slate-50 object-cover"
+                src={
+                  imgPath == "http://localhost:8000null"
+                    ? placeHolderImg
+                    : placeHolderImg
+                }
               />
               <div>
-                <p className=' text-md font-bold'>Hosted by</p>
-                <h2 className=' text-lg '> {owner}</h2>
+                <p className=" text-md font-bold">Hosted by</p>
+                <h2 className=" text-lg "> {owner}</h2>
               </div>
             </div>
           </div>
@@ -136,8 +154,8 @@ export default function EventHeader({
         </div>
       </div>
 
-      <div className='flex justify-center '>
-        <img src={imgPath} alt='' className='max-w-4xl h-[400px] w-[890px]' />
+      <div className="flex justify-center ">
+        <img src={imgPath} alt="" className="max-w-4xl h-[400px] w-[890px]" />
       </div>
     </div>
   );
