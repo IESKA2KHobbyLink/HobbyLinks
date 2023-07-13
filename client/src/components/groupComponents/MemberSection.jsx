@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function MemberSection({ groupId, members }) {
   return (
@@ -8,6 +9,7 @@ function MemberSection({ groupId, members }) {
         {members.map((member) => (
           <UserCard
             key={member.user_id}
+            id={member.user_id}
             name={member.user_name}
             email={member.email}
             img={`http://localhost:8000${member.profile_pic}`}
@@ -18,18 +20,23 @@ function MemberSection({ groupId, members }) {
   );
 }
 
-function UserCard({ name, email, img }) {
+function UserCard({ name, email, img, id }) {
+  const nameSplit = name.split(" ");
+  const placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
   return (
-    <div className="px-2 py-4 border rounded-md flex gap-2 max-w-sm">
+    <Link
+      className="px-2 py-4 border rounded-md flex gap-2 max-w-sm"
+      to={`/UserProfile/${id}`}
+    >
       <img
         className="w-16 h-16 rounded-full border-4 border-slate-50 object-cover"
-        src={img}
+        src={img == "http://localhost:8000null" ? placeHolderImg : img}
       />
       <div>
         <h1 className="text-lg font-bold ">{name}</h1>
         <p className="text-sm font-normal">{email}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 

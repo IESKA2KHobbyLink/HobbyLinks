@@ -16,8 +16,6 @@ function UserProfile() {
     withCredentials: true,
   });
 
-  //const { groupId } = useParams(); //TODO: use dynamic route
-
   const [active, setActive] = useState("UserAbout");
   const [userDetails, setUserDetails] = useState([]);
   const [groupDetails, setGroupDetails] = useState([]);
@@ -25,17 +23,16 @@ function UserProfile() {
   const [imgAvatar, setImgAvatar] = useState(undefined);
   const [imgBackground, setImgBackground] = useState(undefined);
 
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const currentUserId = currentUser.data.user_id;
+  const { userID } = useParams(); //TODO: use dynamic route
 
   //form submmit
   const [isLoading, setLoading] = useState(false);
-  //FIX: if curret profile use the currentUser data
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/users/${currentUserId}`
+          `http://localhost:8000/api/users/${userID}`
         );
 
         setUserDetails(response.data);
@@ -116,10 +113,22 @@ function UserProfile() {
       setLoading(false); // Set loading state to false in case of error
     }
   };
+  //localstroage user
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserId = currentUser.data.user_id;
 
   const imgPath = `http://localhost:8000${userDetails.profile_pic}`;
   const bgImgPath = `http://localhost:8000${userDetails.header_pic}`;
+  const bgPlaceHolder =
+    "https://i.pinimg.com/originals/b2/bf/45/b2bf45dd18a62018800974b0a6ca68f0.jpg";
 
+  let placeHolderImg = "";
+
+  if (userDetails.user_name) {
+    const nameSplit = userDetails.user_name.split(" ");
+    placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`;
+  }
+  console.log(placeHolderImg);
   return (
     <Fragment>
       <div>
@@ -127,20 +136,28 @@ function UserProfile() {
           <div className="relative h-80 rounded-b flex justify-center">
             <img
               src={
-                bgImgPath
-                  ? bgImgPath
-                  : "https://i.pinimg.com/originals/b2/bf/45/b2bf45dd18a62018800974b0a6ca68f0.jpg"
-              } //
+                imgPath == "http://localhost:8000null"
+                  ? bgPlaceHolder
+                  : bgImgPath
+              }
               className="cursor-pointer object-cover w-full h-full rounded-b"
               alt="cover"
-              onClick={() => setImgBackground(true)}
+              onClick={() => {
+                if (userID == currentUserId) setImgBackground(true);
+              }}
             />
             <div className="absolute -bottom-6 card flex justify-content-center">
               <img
-                src={imgPath}
+                src={
+                  imgPath == "http://localhost:8000null"
+                    ? placeHolderImg
+                    : imgPath
+                }
                 className="cursor-pointer object-cover border-4 border-white w-40 h-40 rounded-full"
                 alt="avatar"
-                onClick={() => setImgAvatar(true)}
+                onClick={() => {
+                  if (userID == currentUserId) setImgAvatar(true);
+                }}
               />
             </div>
           </div>
