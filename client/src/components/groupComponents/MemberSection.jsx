@@ -21,6 +21,8 @@ function MemberSection({ groupId, members }) {
 }
 
 function UserCard({ name, email, img, id }) {
+  const nameSplit = name.split(" ");
+  const placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
   return (
     <Link
       className="px-2 py-4 border rounded-md flex gap-2 max-w-sm"
@@ -28,7 +30,7 @@ function UserCard({ name, email, img, id }) {
     >
       <img
         className="w-16 h-16 rounded-full border-4 border-slate-50 object-cover"
-        src={img}
+        src={img == "http://localhost:8000null" ? placeHolderImg : img}
       />
       <div>
         <h1 className="text-lg font-bold ">{name}</h1>
