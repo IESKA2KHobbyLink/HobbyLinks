@@ -28,7 +28,7 @@ function UserProfile() {
   //localstroage user
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const currentUserId = currentUser.data.user_id;
-  console.log("userId", userID, "currentUserId", currentUserId);
+  // console.log("userId", userID, "currentUserId", currentUserId);
   //form submmit
   const [isLoading, setLoading] = useState(false);
   //FIX: if curret profile use the currentUser data
@@ -140,12 +140,7 @@ function UserProfile() {
             />
             <div className="absolute -bottom-6 card flex justify-content-center">
               <img
-                src=""
-                // {
-                //   imgPath == "http://localhost:8000null"
-                //     ? placeHolderImg
-                //     : imgPath
-                // }
+                src={imgPath == "http://localhost:8000null" ? imgPath : imgPath}
                 className="cursor-pointer object-cover border-4 border-white w-40 h-40 rounded-full"
                 alt="avatar"
                 onClick={() => {

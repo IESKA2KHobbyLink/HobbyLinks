@@ -149,7 +149,14 @@ function Header() {
       setLoading(false);
     }
   };
-
+  let imgPath = "";
+  let nameSplit = "";
+  let placeHolderImg = "";
+  if (user) {
+    imgPath = `http://localhost:8000${user.data.profile_pic}`;
+    nameSplit = user.data.user_name.split(" ");
+    placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
+  }
   return (
     <Fragment>
       <div className="flex justify-between gap-5 align-top mx-auto sticky top-0 z-20 max-w-[2560px] px-10 py-2 bg-white shadow-md">
@@ -192,9 +199,17 @@ function Header() {
               <div className="flex gap-1">
                 <Link
                   to={`/UserProfile/${user.data.user_id}`}
-                  className="text-gray-700 font-bold mr-2  text-center pt-2"
+                  className="text-gray-700 font-bold mr-2  text-center  flex"
                 >
-                  Welcome,{user.data.user_name}
+                  <img
+                    className="w-10 h-10 rounded-full border-4 border-slate-50 object-cover"
+                    src={
+                      user && imgPath == "http://localhost:8000null"
+                        ? placeHolderImg
+                        : imgPath
+                    }
+                  />
+                  <p className="pt-2">{user.data.user_name}</p>
                 </Link>
                 <Link
                   to="/createGroup"
