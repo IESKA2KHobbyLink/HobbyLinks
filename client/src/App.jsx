@@ -15,12 +15,12 @@ function App() {
       <SearchProvider>
         <Header />
         <Routes>
-          <Route path='/' element={<MainPage />} />
-          <Route path='/group/:groupId' element={<GroupPage />} />
-          <Route path='/event/:eventId' element={<EventPage />} />
-          <Route path='/createEvent' element={<CreateEventPage />} />
-          <Route path='/createGroup' element={<CreateGroupPage />} />
-          <Route path='/userProfile' element={<UserProfile />} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/group/:groupId" element={<GroupPage />} />
+          <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/createEvent" element={<CreateEventPage />} />
+          <Route path="/createGroup" element={<CreateGroupPage />} />
+          <Route path="/UserProfile/:userID" element={<UserProfile />} />
         </Routes>
       </SearchProvider>
     </BrowserRouter>
