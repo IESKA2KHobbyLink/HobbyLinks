@@ -10,6 +10,7 @@ function MemberSection({ groupId, members }) {
             key={member.user_id}
             name={member.user_name}
             email={member.email}
+            img={`http://localhost:8000${member.profile_pic}`}
           />
         ))}
       </div>
@@ -17,12 +18,12 @@ function MemberSection({ groupId, members }) {
   );
 }
 
-function UserCard({ name, email }) {
+function UserCard({ name, email, img }) {
   return (
     <div className="px-2 py-4 border rounded-md flex gap-2 max-w-sm">
       <img
         className="w-16 h-16 rounded-full border-4 border-slate-50 object-cover"
-        src="https://www.kindacode.com/wp-content/uploads/2022/05/cute.jpeg"
+        src={img}
       />
       <div>
         <h1 className="text-lg font-bold ">{name}</h1>

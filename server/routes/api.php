@@ -20,10 +20,6 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 //Users Routes
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
@@ -31,6 +27,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/user/{id}/created_groups', [UserController::class, 'queryUsercreatedGroups']); //query user created groups
+Route::get('/user/{id}/created_events', [UserController::class,'queryUsercreatedEvents']); //query user created events
 
 
 //Auth Routes

@@ -9,6 +9,8 @@ HOBBYLINKS は　同じ趣味興味や趣味を持つ人々のための、対面
 <img align="left" alt="Php" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" />
 <img align="left" alt="Laravel" width="30px" style="padding-right:10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain-wordmark.svg" />
 <img  align="left" alt="tailwinds" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" />  
+<img align="left" alt="mySql" width="30px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" />
+          
 <br/>
 
 ## インストール
@@ -43,6 +45,7 @@ php artisan key:generate
 php artisan migrate
 php artisan serve
 ```
-
-
-
+#### Server　サーバー開始
+```
+php artisan serve
+```
