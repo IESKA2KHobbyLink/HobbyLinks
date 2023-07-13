@@ -16,8 +16,6 @@ function UserProfile() {
     withCredentials: true,
   });
 
-  //const { groupId } = useParams(); //TODO: use dynamic route
-
   const [active, setActive] = useState("UserAbout");
   const [userDetails, setUserDetails] = useState([]);
   const [groupDetails, setGroupDetails] = useState([]);
@@ -25,9 +23,12 @@ function UserProfile() {
   const [imgAvatar, setImgAvatar] = useState(undefined);
   const [imgBackground, setImgBackground] = useState(undefined);
 
+  const { userID } = useParams(); //TODO: use dynamic route
+
+  //localstroage user
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const currentUserId = currentUser.data.user_id;
-
+  console.log("userId", userID, "currentUserId", currentUserId);
   //form submmit
   const [isLoading, setLoading] = useState(false);
   //FIX: if curret profile use the currentUser data
@@ -35,7 +36,7 @@ function UserProfile() {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/users/${currentUserId}`
+          `http://localhost:8000/api/users/${userID}`
         );
 
         setUserDetails(response.data);
@@ -133,14 +134,18 @@ function UserProfile() {
               } //
               className="cursor-pointer object-cover w-full h-full rounded-b"
               alt="cover"
-              onClick={() => setImgBackground(true)}
+              onClick={() => {
+                if (userID == currentUserId) setImgBackground(true);
+              }}
             />
             <div className="absolute -bottom-6 card flex justify-content-center">
               <img
                 src={imgPath}
                 className="cursor-pointer object-cover border-4 border-white w-40 h-40 rounded-full"
                 alt="avatar"
-                onClick={() => setImgAvatar(true)}
+                onClick={() => {
+                  if (userID == currentUserId) setImgAvatar(true);
+                }}
               />
             </div>
           </div>

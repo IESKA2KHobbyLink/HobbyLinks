@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 
 function CategoryViews() {
-
+  return <div>CategoryViews </div>;
 }
 
 export default CategoryViews;
