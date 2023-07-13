@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Group;
 use App\Models\Event;
-
+use Illuminate\Support\Facades\Log;
 
 
 class UserController extends Controller
@@ -101,6 +101,14 @@ class UserController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
 
+        Log::info('Old Profile Picture Path: ' . $user->profile_pic);
+        if ($user->profile_pic) {
+            // Delete the old profile picture
+            $oldProfilePicPath  = str_replace('/storage', 'public', $user->profile_pic);
+            Log::info('Old Profile Picture Path: ' . $oldProfilePicPath);
+            Storage::delete($oldProfilePicPath);
+        }
+
         if ($request->hasFile('image')) {
             $rules = [
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
@@ -121,6 +129,13 @@ class UserController extends Controller
             $user->profile_Pic = $publicPath;
 
             $user->save();
+        }
+
+        if ($user->header_pic) {
+            // Delete the old profile picture
+            $oldHeaderPicPath  = str_replace('/storage', 'public', $user->header_pic);
+            Log::info('Old Profile Picture Path: ' . $oldHeaderPicPath);
+            Storage::delete($oldHeaderPicPath);
         }
 
         if ($request->hasFile('bg_img')) {
