@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Listview from "../components/Listview";
+import CategoryViews from "../components/CategoryViews";
 import Map from "../components/Map";
 
 function MainPage() {
@@ -8,6 +9,9 @@ function MainPage() {
       <div className='mx-auto flex justify-center '>
         <div className='max-w-4xl px-5'>
           <Listview />
+        </div>
+        <div>
+          <CategoryViews></CategoryViews>
         </div>
         <div>
           <Map></Map>

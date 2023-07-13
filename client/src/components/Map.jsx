@@ -80,7 +80,7 @@ function Map() {
   }, []);
 
   return (
-    <div id="map" className="w-96 h-80 mb-6 top-[117px] sticky">
+    <div id="map" className="w-96 h-80 mb-6 top-1/2 sticky">
       <div ref={mapContainer} className="h-full" />
     </div>
   );
