@@ -10,10 +10,8 @@ function MainPage() {
         <div className='max-w-4xl px-5'>
           <Listview />
         </div>
-        <div>
+        <div className="">
           <CategoryViews></CategoryViews>
-        </div>
-        <div>
           <Map></Map>
         </div>
       </div>
