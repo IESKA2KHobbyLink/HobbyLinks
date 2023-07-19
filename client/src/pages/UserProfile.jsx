@@ -1,10 +1,11 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import JoinedEvent from "../components/userProfile/JoinedEvent";
 import JoinedGroup from "../components/userProfile/JoinedGroup";
 import UserAbout from "../components/userProfile/UserAbout";
 import axios from "axios";
 import Modal from "../components/Modal";
 import { useParams } from "react-router-dom";
+import { UserDetailsContext } from "../context/UserDetailsContext";
 
 function UserProfile() {
   //axios config for POST
@@ -17,7 +18,8 @@ function UserProfile() {
   });
 
   const [active, setActive] = useState("UserAbout");
-  const [userDetails, setUserDetails] = useState([]);
+  //const [userDetails, setUserDetails] = useState([]);
+  const { userDetails, setUserDetails } = useContext(UserDetailsContext); // userContext
   const [groupDetails, setGroupDetails] = useState([]);
   const [eventDetails, setEventDetails] = useState([]);
   const [imgAvatar, setImgAvatar] = useState(undefined);
@@ -102,7 +104,7 @@ function UserProfile() {
       const user = await http.get(
         `http://localhost:8000/api/users/${currentUserId}`
       );
-
+      const current = localStorage.setItem("currentUser", JSON.stringify(user)); // update localstorage
       // Update the user details in the state
       setUserDetails(user.data);
       setLoading(false); // Set loading state to false after update
@@ -128,7 +130,7 @@ function UserProfile() {
     const nameSplit = userDetails.user_name.split(" ");
     placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`;
   }
-  console.log(placeHolderImg);
+
   return (
     <Fragment>
       <div>

@@ -3,7 +3,7 @@ import EventItem from "./EventItem";
 import GroupItem from "./GroupItem";
 import axios from "axios";
 import Searchbar from "./Searchbar";
-import { SearchContext } from "./SearchContext";
+import { SearchContext } from "../context/SearchContext";
 
 function Listview() {
   // groupsをsetGroupsという値を変えれる関数で定義する
@@ -13,7 +13,6 @@ function Listview() {
   // serchContextを使うためのコード
   // 分割代入
   const { searchValue } = useContext(SearchContext);
-
 
   // showListの値を更新するためにsetShowListがある？groupは初期値？
   const [showList, setShowList] = useState("group");
@@ -47,7 +46,7 @@ function Listview() {
 
     fetchGroupsData();
   }, []);
-  
+
   // eventsという配列を回す,帰ってくる値は条件一致の配列がまとまって帰ってくる
   // foreachみたいな機能
   const filteredEvents = events.filter(
