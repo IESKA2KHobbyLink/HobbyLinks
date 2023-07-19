@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 
 import axios from "axios";
-import { SearchContext } from "./SearchContext";
+import { SearchContext } from "../context/SearchContext";
+import { UserDetailsContext } from "../context/UserDetailsContext";
 
 function Header() {
   const http = axios.create({
@@ -16,8 +17,9 @@ function Header() {
     withCredentials: true,
   });
 
-  //handle search
-  const { searchValue, handleSearchChange } = useContext(SearchContext);
+  //Context
+  const { searchValue, handleSearchChange } = useContext(SearchContext); //handle search
+  const { userDetails } = useContext(UserDetailsContext); // userContext
 
   const handleInputChange = (e) => {
     handleSearchChange(e.target.value);
@@ -157,6 +159,7 @@ function Header() {
     nameSplit = user.data.user_name.split(" ");
     placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
   }
+
   return (
     <Fragment>
       <div className="flex justify-between gap-5 align-top mx-auto sticky top-0 z-20 max-w-[2560px] px-10 py-2 bg-white shadow-md">
