@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import JoinedEvent from "../components/userProfile/JoinedEvent";
 import JoinedGroup from "../components/userProfile/JoinedGroup";
 import UserAbout from "../components/userProfile/UserAbout";
@@ -18,7 +18,8 @@ function UserProfile() {
   });
 
   const [active, setActive] = useState("UserAbout");
-  const [userDetails, setUserDetails] = useState([]);
+  //const [userDetails, setUserDetails] = useState([]);
+  const { userDetails, setUserDetails } = useContext(UserDetailsContext); // userContext
   const [groupDetails, setGroupDetails] = useState([]);
   const [eventDetails, setEventDetails] = useState([]);
   const [imgAvatar, setImgAvatar] = useState(undefined);

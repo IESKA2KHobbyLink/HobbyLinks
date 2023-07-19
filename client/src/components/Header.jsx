@@ -19,7 +19,9 @@ function Header() {
 
   //Context
   const { searchValue, handleSearchChange } = useContext(SearchContext); //handle search
-  const { userDetails } = useContext(UserDetailsContext); // userContext
+  const { userDetails, setUserDetails } = useContext(UserDetailsContext); // userContext
+
+  console.log("userDetails", userDetails.profile_pic);
 
   const handleInputChange = (e) => {
     handleSearchChange(e.target.value);
@@ -154,9 +156,10 @@ function Header() {
   let imgPath = "";
   let nameSplit = "";
   let placeHolderImg = "";
-  if (user) {
-    imgPath = `http://localhost:8000${user.data.profile_pic}`;
-    nameSplit = user.data.user_name.split(" ");
+
+  if (userDetails.length != 0) {
+    imgPath = `http://localhost:8000${userDetails.profile_pic}`;
+    nameSplit = userDetails.user_name.split(" ");
     placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
   }
 
