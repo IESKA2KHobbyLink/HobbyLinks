@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             CategoiesTableSeeder::class,
             UserSeeder::class,
             GroupSeeder::class,
+            EventSeeder::class,
+
+
         ]);
 
 
