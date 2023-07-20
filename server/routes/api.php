@@ -27,7 +27,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/user/{id}/created_groups', [UserController::class, 'queryUsercreatedGroups']); //query user created groups
-Route::get('/user/{id}/created_events', [UserController::class,'queryUsercreatedEvents']); //query user created events
+Route::get('/user/{id}/created_events', [UserController::class, 'queryUsercreatedEvents']); //query user created events
 
 
 //Auth Routes
@@ -36,7 +36,7 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 
 //Groups Routes
 Route::get('/groups', [GroupController::class, 'index']);
-Route::get('/groups/{id}', [GroupController::class, 'show']);
+Route::get('/groups/{id}/', [GroupController::class, 'show']);
 Route::post('/groups', [GroupController::class, 'store']);
 Route::put('/groups/{id}', [GroupController::class, 'update']);
 Route::delete('/groups/{id}', [GroupController::class, 'destroy']);
