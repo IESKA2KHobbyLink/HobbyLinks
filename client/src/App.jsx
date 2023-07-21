@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import UserProfile from "./pages/UserProfile";
 import { SearchProvider } from "./context/SearchContext";
 import { UserDetailsProvider } from "./context/UserDetailsContext";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/createEvent" element={<CreateEventPage />} />
             <Route path="/createGroup" element={<CreateGroupPage />} />
             <Route path="/UserProfile/:userID" element={<UserProfile />} />
+            <Route path="/Chat" element={<ChatPage />} />
           </Routes>
         </SearchProvider>
       </UserDetailsProvider>
