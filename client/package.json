@@ -17,8 +17,10 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@mapbox/search-js-react": "^1.0.0-beta.16",
     "axios": "^1.4.0",
-    "primereact": "^9.6.0",
+    "laravel-echo": "^1.15.2",
     "mapbox-gl": "^2.15.0",
+    "primereact": "^9.6.0",
+    "pusher-js": "^8.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1"
