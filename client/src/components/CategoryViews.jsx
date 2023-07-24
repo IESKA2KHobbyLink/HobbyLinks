@@ -43,7 +43,7 @@ function CategoryViews() {
             key={c.category_id}
             category_Name={c.category_name}
             category_Id={c.category_id}
-            isSelected={selectedCategory.includes(c.category_name)}
+            isSelected={selectedCategory.includes(c.category_id)}
             onClick={() => handleCategoryClick(c.category_id)}
           />
         ))}
