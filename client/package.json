@@ -17,6 +17,11 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.1",
     "@mapbox/search-js-react": "^1.0.0-beta.16",
     "axios": "^1.4.0",
+
+   
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1"
+
     "laravel-echo": "^1.15.2",
     "mapbox-gl": "^2.15.0",
     "primereact": "^9.6.0",
@@ -25,6 +30,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",
     "socket.io-client": "^4.7.1"
+
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

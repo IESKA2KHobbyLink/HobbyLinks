@@ -57,6 +57,7 @@ Route::get('/search', 'Event@search');
 Route::get('/groups/{id}/users', [G_manageController::class, 'queryUserInGroup']);
 Route::post('/groups/{id}/users', [G_manageController::class, 'addUserToGroup']);
 Route::delete('/groups/{id}/users', [G_manageController::class, 'removeUserFromGroup']);
+Route::get('/groups/{id}/events/', [G_manageController::class, 'showEvent']);
 
 //Emange route
 Route::get('/events/{id}/users', [E_manageController::class, 'queryUserInEvent']);
