@@ -138,7 +138,7 @@ function UserProfile() {
           <div className="relative h-80 rounded-b flex justify-center">
             <img
               src={
-                imgPath == "http://localhost:8000null"
+                bgImgPath == "http://localhost:8000null"
                   ? bgPlaceHolder
                   : bgImgPath
               }

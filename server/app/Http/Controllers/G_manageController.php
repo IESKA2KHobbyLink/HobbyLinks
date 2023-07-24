@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GManage;
+use App\Models\EManage;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -47,5 +49,16 @@ class G_manageController extends Controller
         // )", [$groupId]);
 
         return response()->json($usersData, 200);
+    }
+
+    public function showEvent($groupId)
+    {
+        //$group = Group::find($id);
+        //$user = User::find($group->created_by);
+        //$group->owner = $user->user_name;
+        $event = Event::where('group_id', $groupId)->get();
+        //$group->memberCount = count($users);
+
+        return response()->json($event, 200);
     }
 }

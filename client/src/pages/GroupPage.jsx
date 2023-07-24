@@ -29,6 +29,8 @@ function GroupPage() {
     memberCount: "",
   });
 
+  const [eventDetails, setEventDetails] = useState([]);
+
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
@@ -55,6 +57,24 @@ function GroupPage() {
 
     fetchGroupData();
   }, [groupId]);
+
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/groups/${groupId}/events`
+        );
+
+        setEventDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching event details:", error);
+      }
+    };
+    fetchEvent();
+  }, []);
+  //console.log(eventDetails);
+
 
   //handle Join group btn
   const [joined, setJoined] = useState(false);
@@ -158,7 +178,7 @@ function GroupPage() {
   }, [groupId]);
 
   const [loading, setLoading] = useState(false);
-
+  
   return (
     <>
       <div className="min-h-screen bg-slate-50">
@@ -227,7 +247,7 @@ function GroupPage() {
           </div>
 
           <About desc={groupDetails.desc} />
-          <EventsSection events={groupDetails.events} />
+          <EventsSection events={eventDetails} />
           <MemberSection groupId={groupId} members={members} />
           <Photo />
         </div>
