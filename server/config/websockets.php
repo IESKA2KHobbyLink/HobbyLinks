@@ -49,6 +49,8 @@ return [
      */
     'allowed_origins' => [
         //
+        '*',
+        'localhost:5173'
 
     ],
 

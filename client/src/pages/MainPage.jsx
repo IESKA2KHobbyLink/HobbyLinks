@@ -11,8 +11,8 @@ function MainPage() {
           <Listview />
         </div>
         <div className="">
-          <CategoryViews></CategoryViews>
           <Map></Map>
+          <CategoryViews></CategoryViews>
         </div>
       </div>
     </div>
