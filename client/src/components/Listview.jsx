@@ -11,6 +11,7 @@ function Listview() {
   const [groups, setGroups] = useState([]);
   const [events, setEvents] = useState([]);
   const { selectedCategory } = useContext(CategoryContext);
+  console.log("selectedCategory", selectedCategory);
   // serchContextを使うためのコード
   // 分割代入
   const { searchValue } = useContext(SearchContext);
@@ -50,26 +51,37 @@ function Listview() {
 
   // eventsという配列を回す,帰ってくる値は条件一致の配列がまとまって帰ってくる
   // foreachみたいな機能
-  const filteredEvents = events.filter(
-    (event) =>
-      event.event_name
-        // 文字を小文字にして返す
-        .toLowerCase()
-        // （検索値）が小文字に変換され、前後の空白がトリム（削除）された後、
-        // 文字列に含まれているかどうかを判定する
 
-        .includes(searchValue.toLowerCase().trim()) ||
-      event.prefecture.toLowerCase().includes(searchValue.toLowerCase().trim())
-  );
+  const filteredEvents = events.filter((event) => {
+    const isNameMatched = event.event_name
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
+    const isPrefectureMatched = event.prefecture
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
+    const isCategoryMatched =
+      selectedCategory.length === 0 ||
+      selectedCategory.includes(event.category_id);
 
-  const filteredGroups = groups.filter(
-    (group) =>
-      group.group_name
-        .toLowerCase()
-        .includes(searchValue.toLowerCase().trim()) ||
-      group.prefecture.toLowerCase().includes(searchValue.toLowerCase().trim())
-  );
+    // Return true if either name, prefecture, or category matches (or no category is selected)
+    return (isNameMatched || isPrefectureMatched) && isCategoryMatched;
+  });
 
+  const filteredGroups = groups.filter((group) => {
+    const isNameMatched = group.group_name
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
+    const isPrefectureMatched = group.prefecture
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
+    const isCategoryMatched =
+      selectedCategory.length === 0 ||
+      selectedCategory.includes(group.category_id);
+
+    // Return true if either name or prefecture matches and either category matches (or no category is selected)
+    return (isNameMatched || isPrefectureMatched) && isCategoryMatched;
+  });
+  console.log(filteredGroups);
   return (
     <>
       <Searchbar setShowList={setShowList} showList={showList} />
