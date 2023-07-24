@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 function AttendeesSection({ eventId, attendees }) {
   return (
     <div className="mx-auto mt-5 max-w-4xl w-full">
@@ -12,6 +13,7 @@ function AttendeesSection({ eventId, attendees }) {
             name={attendee.user_name}
             email={attendee.email}
             img={`http://localhost:8000${attendee.profile_pic}`}
+            id={attendee.user_id}
           />
         ))}
       </div>
@@ -19,11 +21,14 @@ function AttendeesSection({ eventId, attendees }) {
   );
 }
 
-function UserCard({ name, email, img }) {
+function UserCard({ name, email, img, id }) {
   const nameSplit = name.split(" ");
   const placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
   return (
-    <div className="px-2 py-4 border rounded-md flex gap-2 max-w-sm">
+    <Link
+      className="px-2 py-4 border rounded-md flex gap-2 max-w-sm"
+      to={`/UserProfile/${id}`}
+    >
       <img
         className="w-16 h-16 rounded-full border-4 border-slate-50 object-cover"
         src={img == "http://localhost:8000null" ? placeHolderImg : img}
@@ -32,7 +37,7 @@ function UserCard({ name, email, img }) {
         <h1 className="text-lg font-bold ">{name}</h1>
         <p className="text-sm font-normal">{email}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 

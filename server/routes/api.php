@@ -5,6 +5,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\G_manageController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GroupChatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -64,3 +66,9 @@ Route::delete('/events/{id}/users', [E_manageController::class, 'removeUserFromE
 
 //photos
 Route::post('/photos', [PhotoController::class, 'upload']);
+
+//category
+Route::get('/category', [CategoryController::class, 'index']);
+
+
+Route::post('/send-message', [GroupChatController::class, 'sendMessage']);

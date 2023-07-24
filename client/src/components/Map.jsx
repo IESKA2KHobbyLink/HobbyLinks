@@ -58,7 +58,7 @@ function Map() {
   }, [lng, lat]); // Runs when lng or lat change
 
   return (
-    <div id="map" className="w-96 h-80 mb-6 top-[356px] sticky">
+    <div id="map" className="w-96 h-80 mb-6 mt-4">
       <div ref={mapContainer} className="h-full" />
     </div>
   );

@@ -117,7 +117,7 @@ function UserProfile() {
   };
   //localstroage user
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const currentUserId = currentUser.data.user_id;
+  const currentUserId = currentUser ? currentUser.data.user_id : null;
 
   const imgPath = `http://localhost:8000${userDetails.profile_pic}`;
   const bgImgPath = `http://localhost:8000${userDetails.header_pic}`;
