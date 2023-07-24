@@ -4,12 +4,13 @@ import GroupItem from "./GroupItem";
 import axios from "axios";
 import Searchbar from "./Searchbar";
 import { SearchContext } from "../context/SearchContext";
+import CategoryContext from "../context/CategoryContext";
 
 function Listview() {
   // groupsをsetGroupsという値を変えれる関数で定義する
   const [groups, setGroups] = useState([]);
   const [events, setEvents] = useState([]);
-
+  const { selectedCategory } = useContext(CategoryContext);
   // serchContextを使うためのコード
   // 分割代入
   const { searchValue } = useContext(SearchContext);

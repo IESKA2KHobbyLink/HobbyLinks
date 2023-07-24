@@ -30,11 +30,19 @@ class EventSeeder extends Seeder
                     'date' => '2023-08-30',
                     'created_at' => '2023-06-19',
                     'updated_at' => '2023-06-19',
-                    'deleted_at' => '2023-06-19',
+
                 ]
             ]);
 
-
+            EManage::insert(
+                [
+                    ['group_id' => 2, 'user_id' => 1, 'event_id' => 1],
+                    ['group_id' => 2, 'user_id' => 2, 'event_id' => 1],
+                    ['group_id' => 2, 'user_id' => 3, 'event_id' => 1],
+                    ['group_id' => 2, 'user_id' => 4, 'event_id' => 1],
+                    ['group_id' => 2, 'user_id' => 8, 'event_id' => 1],
+                ]
+            );
 
             Event::insert([
                 [
@@ -49,10 +57,19 @@ class EventSeeder extends Seeder
                     'date' => '2023-09-25',
                     'created_at' => '2023-06-19',
                     'updated_at' => '2023-06-19',
-                    'deleted_at' => '2023-06-19',
+
                 ]
             ]);
 
+            EManage::insert(
+                [
+                    ['group_id' => 1, 'user_id' => 1, 'event_id' => 2],
+                    ['group_id' => 1, 'user_id' => 2, 'event_id' => 2],
+                    ['group_id' => 1, 'user_id' => 3, 'event_id' => 2],
+                    ['group_id' => 1, 'user_id' => 4, 'event_id' => 2],
+                    ['group_id' => 1, 'user_id' => 8, 'event_id' => 2],
+                ]
+            );
 
 
             Event::insert([
@@ -69,33 +86,18 @@ class EventSeeder extends Seeder
                     'date' => '2023-08-30',
                     'created_at' => '2023-06-19',
                     'updated_at' => '2023-06-19',
-                    'deleted_at' => '2023-06-19',
+
                 ]
             ]);
-
-            EManage::create([
-                'event_id' => 3,
-                'group_id' => 3,
-                'user_id' => 5
-            ]);
-
-            EManage::insert([
-                ['event_id' => 1, 'group_id' => 2, 'user_id' => 1],
-                ['event_id' => 1, 'group_id' => 2, 'user_id' => 3], // 既存のイベントにも追加
-                ['event_id' => 1, 'group_id' => 2, 'user_id' => 2],
-                ['event_id' => 1, 'group_id' => 2, 'user_id' => 5],
-            ]);
-
-            EManage::insert([
-                ['event_id' => 2, 'group_id' => 1, 'user_id' => 1],
-                ['event_id' => 2, 'group_id' => 1, 'user_id' => 3], // 既存のイベントにも追加
-            ]);
-
-            EManage::create([
-                'event_id' => 2,
-                'group_id' => 2,
-                'user_id' => 2
-            ]);
+            EManage::insert(
+                [
+                    ['group_id' => 5, 'user_id' => 5, 'event_id' => 3],
+                    ['group_id' => 5, 'user_id' => 2, 'event_id' => 3],
+                    ['group_id' => 5, 'user_id' => 3, 'event_id' => 3],
+                    ['group_id' => 5, 'user_id' => 4, 'event_id' => 3],
+                    ['group_id' => 5, 'user_id' => 8, 'event_id' => 3],
+                ]
+            );
         });
     }
 }
