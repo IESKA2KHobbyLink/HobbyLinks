@@ -11,7 +11,7 @@ function Listview() {
   const [groups, setGroups] = useState([]);
   const [events, setEvents] = useState([]);
   const { selectedCategory } = useContext(CategoryContext);
-  console.log("selectedCategory", selectedCategory);
+  //console.log("selectedCategory", selectedCategory);
   // serchContextを使うためのコード
   // 分割代入
   const { searchValue } = useContext(SearchContext);
@@ -81,7 +81,7 @@ function Listview() {
     // Return true if either name or prefecture matches and either category matches (or no category is selected)
     return (isNameMatched || isPrefectureMatched) && isCategoryMatched;
   });
-  console.log(filteredGroups);
+
   return (
     <>
       <Searchbar setShowList={setShowList} showList={showList} />

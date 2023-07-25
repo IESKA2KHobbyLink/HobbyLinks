@@ -32,7 +32,7 @@ function CategoryViews() {
     });
   };
 
-  console.log("selectedCategory", selectedCategory);
+  //console.log("selectedCategory", selectedCategory);
 
   return (
     <div className="w-96 h-64  border rounded-xl my-5 ">
