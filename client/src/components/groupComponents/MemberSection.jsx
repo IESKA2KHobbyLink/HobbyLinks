@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import { Link } from "react-router-dom";
 
-function MemberSection({ groupId, members }) {
+const MemberSection = forwardRef(({ groupId, members }, ref) => {
   return (
-    <div className="mx-5 my-4 max-w-4xl">
+    <div className="mx-5 my-4 max-w-4xl" ref={ref}>
       <h1 className="text-3xl font-bold pb-4">Members</h1>
       <div className="grid grid-cols-1 gap-1 md:grid-cols-2 lg:grid-cols-3">
         {members.map((member) => (
@@ -18,7 +18,7 @@ function MemberSection({ groupId, members }) {
       </div>
     </div>
   );
-}
+});
 
 function UserCard({ name, email, img, id }) {
   const nameSplit = name.split(" ");

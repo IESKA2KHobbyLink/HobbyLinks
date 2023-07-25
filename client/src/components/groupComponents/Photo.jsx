@@ -1,10 +1,10 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 
-function Photo() {
+const Photo = forwardRef((props, ref) => {
   return (
-    <div className="mx-5">
+    <div className="mx-5" ref={ref}>
       <h1 className="text-3xl font-bold">Photos</h1>
       <div className="flex gap-1 justify-center items-center bg-slate-100 max-w-4xl w-full h-52 mt-2 border-slate-200 rounded-md">
         <div className="flex flex-col items-center">
@@ -14,6 +14,6 @@ function Photo() {
       </div>
     </div>
   );
-}
+});
 
 export default Photo;
