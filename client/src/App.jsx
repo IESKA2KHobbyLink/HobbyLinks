@@ -23,7 +23,7 @@ function App() {
             <Route path="/createEvent" element={<CreateEventPage />} />
             <Route path="/createGroup" element={<CreateGroupPage />} />
             <Route path="/UserProfile/:userID" element={<UserProfile />} />
-            <Route path="/Chat" element={<ChatPage />} />
+            <Route path="/group/:groupId/Chat" element={<ChatPage />} />
           </Routes>
         </SearchProvider>
       </UserDetailsProvider>

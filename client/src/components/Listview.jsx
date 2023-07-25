@@ -53,24 +53,30 @@ function Listview() {
   // foreachみたいな機能
 
   const filteredEvents = events.filter((event) => {
-    const isNameMatched = event.event_name.toLowerCase().includes(searchValue.toLowerCase().trim());
+    const isNameMatched = event.event_name
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
     const isPrefectureMatched = event.prefecture
       .toLowerCase()
       .includes(searchValue.toLowerCase().trim());
     const isCategoryMatched =
-      selectedCategory.length === 0 || selectedCategory.includes(event.category_id);
+      selectedCategory.length === 0 ||
+      selectedCategory.includes(event.category_id);
 
     // Return true if either name, prefecture, or category matches (or no category is selected)
-    return (isNameMatched || isPrefectureMatched) && isCategoryMatched;
+    return isNameMatched || isPrefectureMatched;
   });
 
   const filteredGroups = groups.filter((group) => {
-    const isNameMatched = group.group_name.toLowerCase().includes(searchValue.toLowerCase().trim());
+    const isNameMatched = group.group_name
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
     const isPrefectureMatched = group.prefecture
       .toLowerCase()
       .includes(searchValue.toLowerCase().trim());
     const isCategoryMatched =
-      selectedCategory.length === 0 || selectedCategory.includes(group.category_id);
+      selectedCategory.length === 0 ||
+      selectedCategory.includes(group.category_id);
 
     // Return true if either name or prefecture matches and either category matches (or no category is selected)
     return (isNameMatched || isPrefectureMatched) && isCategoryMatched;
@@ -79,9 +85,11 @@ function Listview() {
   return (
     <>
       <Searchbar setShowList={setShowList} showList={showList} />
-      <div className=' max-w-4xl mx-auto overflow-y-auto lg:w-[826px] '>
+      <div className=" max-w-4xl mx-auto overflow-y-auto lg:w-[826px] ">
         <h2>Search Results for: {searchValue}</h2>
-        {showList === "event" ? eventlist({ filteredEvents }) : grouplist({ filteredGroups })}
+        {showList === "event"
+          ? eventlist({ filteredEvents })
+          : grouplist({ filteredGroups })}
       </div>
     </>
   );

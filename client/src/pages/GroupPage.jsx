@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
 import GroupHeader from "../components/groupComponents/GroupHeader";
 import About from "../components/groupComponents/About";
 import EventsSection from "../components/groupComponents/EventsSection";
@@ -58,7 +58,6 @@ function GroupPage() {
     fetchGroupData();
   }, [groupId]);
 
-
   useEffect(() => {
     const fetchEvent = async () => {
       try {
@@ -74,7 +73,6 @@ function GroupPage() {
     fetchEvent();
   }, []);
   //console.log(eventDetails);
-
 
   //handle Join group btn
   const [joined, setJoined] = useState(false);
@@ -178,7 +176,21 @@ function GroupPage() {
   }, [groupId]);
 
   const [loading, setLoading] = useState(false);
-  
+
+  //smooth scroll ref
+  const aboutRef = useRef(null);
+  const membersRef = useRef(null);
+  const eventsRef = useRef(null);
+  const photoRef = useRef(null);
+
+  const handleScrollToSection = (ref) => {
+    ref.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  };
+
   return (
     <>
       <div className="min-h-screen bg-slate-50">
@@ -198,12 +210,14 @@ function GroupPage() {
               <button
                 type=""
                 className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2 ml-5"
+                onClick={() => handleScrollToSection(aboutRef)}
               >
                 About
               </button>
               <button
                 type=""
                 className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2"
+                onClick={() => handleScrollToSection(membersRef)}
               >
                 Members
               </button>
@@ -211,21 +225,24 @@ function GroupPage() {
                 type=""
                 className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 
                 text-center m-2"
+                onClick={() => handleScrollToSection(eventsRef)}
               >
                 Events
               </button>
               <button
                 type=""
                 className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2"
+                onClick={() => handleScrollToSection(photoRef)}
               >
                 Picture
               </button>
-              <button
+              <Link
                 type=""
                 className="w-[130px] border hover:border-purple-500 border-b-4 font-medium rounded-lg text-lg px-5 py-2.5 text-center m-2"
+                to={`/group/${groupId}/Chat`}
               >
                 Discussion
-              </button>
+              </Link>
             </div>
             <div>
               <button
@@ -246,10 +263,10 @@ function GroupPage() {
             </div>
           </div>
 
-          <About desc={groupDetails.desc} />
-          <EventsSection events={eventDetails} />
-          <MemberSection groupId={groupId} members={members} />
-          <Photo />
+          <About desc={groupDetails.desc} ref={aboutRef} />
+          <MemberSection groupId={groupId} members={members} ref={membersRef} />
+          <EventsSection events={eventDetails} ref={eventsRef} />
+          <Photo ref={photoRef} />
         </div>
       </div>
     </>

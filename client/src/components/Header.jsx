@@ -19,7 +19,6 @@ function Header() {
 
   //Context
   const { searchValue, handleSearchChange } = useContext(SearchContext); //handle search
-  const { userDetails } = useContext(UserDetailsContext); // userContext
 
   const handleInputChange = (e) => {
     handleSearchChange(e.target.value);
@@ -60,6 +59,7 @@ function Header() {
       );
 
       setUser(login);
+      setUserDetails(login);
 
       setShowModal1(false);
     } catch (error) {

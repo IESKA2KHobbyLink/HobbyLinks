@@ -26,9 +26,9 @@ const users = new Map();
 app.use(cors());
 
 io.on("connection", (socket) => {
-  console.log("Client connected");
+  console.log("A user connected:", socket.id);
 
-  socket.on("join", (userId) => {
+  socket.on("join", (groupId) => {
     console.log("User joined:", userId);
     users.set(socket.id, userId);
   });
@@ -36,17 +36,20 @@ io.on("connection", (socket) => {
   socket.on("message", (message) => {
     console.log("Received message:", message);
 
-    const senderUserId = users.get(socket.id);
+    const groupId = users.get(socket.id);
 
     // Broadcast the message to the user's channel
-    io.to(socket.id).emit("message", {
-      sender: senderUserId,
+    io.to(groupId).emit("message", {
+      sender: socket.id,
       text: message,
     });
   });
 
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
+    console.log("A user disconnected:", socket.id);
+    // Remove the user from the user's channel (room)
+    const groupId = users.get(socket.id);
+    socket.leave(groupId);
     users.delete(socket.id);
   });
 });
