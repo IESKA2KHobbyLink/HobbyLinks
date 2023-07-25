@@ -59,7 +59,6 @@ function Header() {
       );
 
       setUser(login);
-      setUserDetails(login);
 
       setShowModal1(false);
     } catch (error) {
