@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
+import "./Map.css";
+import { Link } from "react-router-dom";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_API;
 
@@ -64,9 +66,12 @@ function Map() {
         const response = await axios.get("http://localhost:8000/api/events");
         console.log("mapResponse", response.data);
         response.data.map((e) => {
-          const popup = new mapboxgl.Popup({ offset: 25 }).setText(
-            e.event_name
-          );
+          const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <div>
+              <img src="http://localhost:8000${e.header_path}" alt="${e.event_name}" class="w-20" />
+              <h3><a href="/event/${e.event_id}">${e.event_name}</a></h3>
+            </div>
+          `);
           const marker = new mapboxgl.Marker()
             .setLngLat([e.lng, e.lat])
             .setPopup(popup)
