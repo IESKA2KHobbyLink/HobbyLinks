@@ -66,6 +66,12 @@ php artisan serve
 php artisan serve
 ```
 
+### シーダーを使用してデータを設定する
+
+```
+php artisan db:seed
+```
+
 ## webSocket
 
 ### webSocket サーバー環境構築
