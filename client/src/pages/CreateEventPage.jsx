@@ -79,43 +79,27 @@ function CreateEventPage() {
         zoom: zoom,
       });
 
-      //geocoder instance
-      geocoder.current = new MapboxGeocoder({
+      // Initialize the geocoder
+      const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
         marker: {
           color: "orange",
         },
-        mapboxgl: mapboxgl,
       });
 
-      geocoderContainer.current.appendChild(
-        geocoder.current.onAdd(map.current)
-      );
-      // Apply custom styling to the input element
-      const inputElement = geocoderContainer.current.querySelector(
-        ".mapboxgl-ctrl-geocoder input"
-      );
+      // Add the geocoder to the map
+      map.current.addControl(geocoder, "top-left");
 
-      //get Json output from geocoder
-      geocoder.current.on("result", (event) => {
+      // Listen to the "result" event of the geocoder
+      geocoder.on("result", (event) => {
         const lnglat = event.result.center;
         const address = event.result.place_name;
-        console.log(lnglat); // 0 : lng, 1 : lat
+        console.log(lnglat); // 0: lng, 1: lat
         console.log(address); // address
         setAddress(address);
         setLngLat(lnglat);
       });
-
-      map.current.addControl(
-        new mapboxgl.GeolocateControl({
-          positionOptions: {
-            enableHighAccuracy: true,
-          },
-          trackUserLocation: true,
-          showUserHeading: true,
-        }),
-        "top-right"
-      );
 
       map.current.on("move", () => {
         setLng(map.current.getCenter().lng.toFixed(4));
@@ -368,9 +352,14 @@ function CreateEventPage() {
           </div>
         </div> */}
 
-        <div ref={geocoderContainer}></div>
-
         {/* Map */}
+
+        <label
+          htmlFor="address"
+          className="block mb-2 text-sm font-medium text-grey-900"
+        >
+          Address
+        </label>
         <div id="map" className="w-full h-44 mb-6 ">
           <div ref={mapContainer} className="h-full rounded-lg" />
         </div>

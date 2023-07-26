@@ -75,7 +75,9 @@ function Map() {
             
             </div>
           `);
-          const marker = new mapboxgl.Marker()
+
+          const markerColor = "#A855F7";
+          const marker = new mapboxgl.Marker({ color: markerColor })
             .setLngLat([e.lng, e.lat])
             .setPopup(popup)
             .addTo(map.current);

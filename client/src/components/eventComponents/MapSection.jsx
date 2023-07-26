@@ -18,8 +18,8 @@ function MapSection({ lat, lng }) {
         center: [lng, lat],
         zoom: zoom,
       });
-
-      const marker = new mapboxgl.Marker()
+      const markerColor = "orange";
+      const marker = new mapboxgl.Marker({ color: markerColor })
         .setLngLat([lng, lat])
         .addTo(map.current);
 
