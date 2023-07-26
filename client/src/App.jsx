@@ -9,6 +9,7 @@ import UserProfile from "./pages/UserProfile";
 import { SearchProvider } from "./context/SearchContext";
 import { UserDetailsProvider } from "./context/UserDetailsContext";
 import ChatPage from "./pages/ChatPage";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/UserProfile/:userID" element={<UserProfile />} />
             <Route path="/group/:groupId/Chat" element={<ChatPage />} />
           </Routes>
+          <Footer />
         </SearchProvider>
       </UserDetailsProvider>
     </BrowserRouter>

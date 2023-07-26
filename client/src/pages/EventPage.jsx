@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import EventHeader from "../components/eventComponents/EventHeader";
 import EventDesc from "../components/eventComponents/EventDesc";
 import AttendeesSection from "../components/eventComponents/AttendeesSection";
+import MapSection from "../components/eventComponents/MapSection";
 import axios from "axios";
 
 function EventPage() {
@@ -21,6 +22,8 @@ function EventPage() {
     group_id: "",
     eventId: eventId,
     owner: "",
+    lng: 0,
+    lat: 0,
   });
 
   //logged in user
@@ -46,6 +49,8 @@ function EventPage() {
           group_id: response.data.group_id,
           date: response.data.date,
           owner: response.data.owner,
+          lng: response.data.lng,
+          lat: response.data.lat,
         });
       } catch (error) {
         console.error("Error fetching group details:", error);
@@ -73,6 +78,7 @@ function EventPage() {
     fetchMembers();
   }, [eventId]);
 
+  console.log(eventDetails);
   return (
     <>
       <div className=" min-h-screen bg-slate-50">
@@ -103,6 +109,7 @@ function EventPage() {
             attendees={attendees}
             currentUser={currentUser}
           />
+          <MapSection lat={eventDetails.lat} lng={eventDetails.lng} />
         </div>
       </div>
     </>

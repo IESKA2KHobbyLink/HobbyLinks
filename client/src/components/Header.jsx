@@ -182,7 +182,8 @@ function Header() {
               type="text"
               className="py-2 px-4 border  border-gray-300 focus:outline-none"
               placeholder="Osaka,Japan"
-              value=""
+              value={searchValue}
+              onChange={handleInputChange}
             />
             <Link
               to={`/`}
