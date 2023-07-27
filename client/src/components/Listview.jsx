@@ -86,7 +86,7 @@ function Listview() {
     <>
       <Searchbar setShowList={setShowList} showList={showList} />
       <div className=" max-w-4xl mx-auto overflow-y-auto lg:w-[826px] ">
-        <h2>Search Results for: {searchValue}</h2>
+        {/* <h2>Search Results for: {searchValue}</h2> */}
         {showList === "event"
           ? eventlist({ filteredEvents })
           : grouplist({ filteredGroups })}
