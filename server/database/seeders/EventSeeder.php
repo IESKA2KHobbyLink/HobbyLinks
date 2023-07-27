@@ -104,33 +104,6 @@ class EventSeeder extends Seeder
                     ['group_id' => 5, 'user_id' => 8, 'event_id' => 3],
                 ]
             );
-            Event::insert([
-                [
-                    'event_name' => 'プリ撮り放題！！',
-                    'prefecture' => 'Osaka',
-                    'address' => 'HEP FIVE Ferris Wheel, 北区角田町5-15, Osaka-shi, Osaka 530-0017, Japan',
-                    'lng' => 135.500107,
-                    'lat' => 34.703989,
-                    'created_by' => 4,
-                    'group_id' => 1,
-                    'type' => 'Inperson',
-                    'header_path' => '/storage/images/eventHeader/puriga.jpg',
-                    'desc' => '当社のURLにアクセスしてキャンペーンに参加!参加してくれたら全員にカラコン割引券プレゼント!!しかし目玉は一日プリおり放題券？！他にもいろいろなうれしい特典ご用意しています!',
-                    'date' => '2023-09-25',
-                    'created_at' => '2023-06-19',
-                    'updated_at' => '2023-06-19',
-
-                ]
-            ]);
-
-            EManage::insert(
-                [
-                    ['group_id' => 2, 'user_id' => 2, 'event_id' => 4],
-                    ['group_id' => 2, 'user_id' => 3, 'event_id' => 4],
-                    ['group_id' => 2, 'user_id' => 5, 'event_id' => 4],
-                    ['group_id' => 2, 'user_id' => 8, 'event_id' => 4],
-                ]
-            );
 
             Event::insert([
                 [
@@ -153,11 +126,11 @@ class EventSeeder extends Seeder
 
             EManage::insert(
                 [
-                    ['group_id' => 2, 'user_id' => 5, 'event_id' => 5],
-                    ['group_id' => 2, 'user_id' => 2, 'event_id' => 5],
-                    ['group_id' => 2, 'user_id' => 3, 'event_id' => 5],
-                    ['group_id' => 2, 'user_id' => 4, 'event_id' => 5],
-                    ['group_id' => 2, 'user_id' => 8, 'event_id' => 5],
+                    ['group_id' => 2, 'user_id' => 5, 'event_id' => 4],
+                    ['group_id' => 2, 'user_id' => 2, 'event_id' => 4],
+                    ['group_id' => 2, 'user_id' => 3, 'event_id' => 4],
+                    ['group_id' => 2, 'user_id' => 4, 'event_id' => 4],
+                    ['group_id' => 2, 'user_id' => 8, 'event_id' => 4],
                 ]
             );
 
@@ -182,11 +155,11 @@ class EventSeeder extends Seeder
 
             EManage::insert(
                 [
-                    ['group_id' => 2, 'user_id' => 8, 'event_id' => 6],
-                    ['group_id' => 2, 'user_id' => 2, 'event_id' => 6],
-                    ['group_id' => 2, 'user_id' => 3, 'event_id' => 6],
-                    ['group_id' => 2, 'user_id' => 4, 'event_id' => 6],
-                    ['group_id' => 2, 'user_id' => 9, 'event_id' => 6],
+                    ['group_id' => 2, 'user_id' => 8, 'event_id' => 5],
+                    ['group_id' => 2, 'user_id' => 2, 'event_id' => 5],
+                    ['group_id' => 2, 'user_id' => 3, 'event_id' => 5],
+                    ['group_id' => 2, 'user_id' => 4, 'event_id' => 5],
+                    ['group_id' => 2, 'user_id' => 9, 'event_id' => 5],
                 ]
             );
         });
