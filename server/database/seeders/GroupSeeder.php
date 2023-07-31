@@ -160,7 +160,7 @@ class GroupSeeder extends Seeder
                     'created_by' => 7,
                     'category_id' => 8,
                     'people_limit' => 930,
-                    'header_path' => '/storage/images/groupHeader/mv_01.jpg',
+                    'header_path' => '/storage/images/groupHeader/okaruto.jpg',
                     'prefecture' => 'Osaka,Japan',
                     'desc' => 'この世の陰謀を世間に広めるのが我々の務め。何が真実で何が嘘なのか、信じるのはあなた次第です。'
                 ]

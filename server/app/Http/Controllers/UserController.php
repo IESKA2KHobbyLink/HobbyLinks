@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Group;
+use App\Models\Event;
+
 
 
 class UserController extends Controller
@@ -52,6 +54,28 @@ class UserController extends Controller
             $user->save();
         }
 
+        if ($request->hasFile('bg_img')) {
+            $rules = [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
+            ];
+
+            $file = $request->file('bg_img');
+
+            $request->validate($rules);
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $disk = 'local';
+
+            $path = $file->storeAs('public/images/profile_banner', $fileName, $disk);
+
+            $publicPath = Storage::url($path);
+
+            $user->header_pic = $publicPath;
+
+            $user->save();
+        }
+
 
         return response()->json($user, 201);
     }
@@ -77,11 +101,54 @@ class UserController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
 
+        if ($request->hasFile('image')) {
+            $rules = [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
+            ];
+
+            $file = $request->file('image');
+
+            $request->validate($rules);
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $disk = 'local';
+
+            $path = $file->storeAs('public/images/profile_pic', $fileName, $disk);
+
+            $publicPath = Storage::url($path);
+
+            $user->profile_Pic = $publicPath;
+
+            $user->save();
+        }
+
+        if ($request->hasFile('bg_img')) {
+            $rules = [
+                'bg_img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像ファイルの制約を指定する
+            ];
+
+            $file = $request->file('bg_img');
+
+            $request->validate($rules);
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $disk = 'local';
+
+            $path = $file->storeAs('public/images/profile_banner', $fileName, $disk);
+
+            $publicPath = Storage::url($path);
+
+            $user->header_pic = $publicPath;
+
+            $user->save();
+        }
+
+
         $user->fill($request->all()); // Use fill() instead of update() to assign the values
 
         $user->save();
-
-
 
         return response()->json($user, 200);
     }
@@ -89,7 +156,8 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
+     **/
+
     public function destroy(string $id)
     {
         //
@@ -127,5 +195,11 @@ class UserController extends Controller
     {
         $groups = Group::where('created_by', $user_id)->get();
         return response()->json($groups, 200);
+    }
+
+    public function queryUsercreatedEvents(string $user_id)
+    {
+        $events = Event::where('created_by', $user_id)->get();
+        return response()->json($events, 200);
     }
 }

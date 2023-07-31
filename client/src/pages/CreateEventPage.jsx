@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
+mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_API;
 
 function CreateEventPage() {
   const http = axios.create({
@@ -34,7 +40,75 @@ function CreateEventPage() {
   }, [user.data.user_id]);
 
   const [userCreatedGroups, setUserCreatedGroup] = useState([]); //fetch http://localhost:8000/api/user/{id}/created_groups
-  console.log("dd", userCreatedGroups);
+
+  //geocoder stuff
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const geocoder = useRef(null);
+  const geocoderContainer = useRef(null);
+  const [lng, setLng] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [zoom, setZoom] = useState(9);
+
+  useEffect(() => {
+    // Get user's current lng lat
+    if (!navigator.geolocation) {
+      console.log("Geolocation is not supported by your browser");
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { longitude, latitude } = position.coords;
+
+          setLng(longitude);
+          setLat(latitude);
+        },
+        (error) => {
+          console.log("Error retrieving location:", error.message);
+        }
+      );
+    }
+  }, []); // Empty dependency array ensures this effect runs only once
+
+  useEffect(() => {
+    if (lng !== null && lat !== null && map.current === null) {
+      //new map instance
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: zoom,
+      });
+
+      // Initialize the geocoder
+      const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        marker: {
+          color: "orange",
+        },
+      });
+
+      // Add the geocoder to the map
+      map.current.addControl(geocoder, "top-left");
+
+      // Listen to the "result" event of the geocoder
+      geocoder.on("result", (event) => {
+        const lnglat = event.result.center;
+        const address = event.result.place_name;
+        console.log(lnglat); // 0: lng, 1: lat
+        console.log(address); // address
+        setAddress(address);
+        setLngLat(lnglat);
+      });
+
+      map.current.on("move", () => {
+        setLng(map.current.getCenter().lng.toFixed(4));
+        setLat(map.current.getCenter().lat.toFixed(4));
+        setZoom(map.current.getZoom().toFixed(2));
+      });
+    }
+  }, [lng, lat]); // Runs when lng or lat change
+
   //From Input State
   const user_id = user.data.user_id;
   const [eventName, setEventName] = useState("");
@@ -44,7 +118,7 @@ function CreateEventPage() {
   const [desc, setDesc] = useState("");
   const [type, setType] = useState("");
   const [group_id, setGroup_id] = useState("");
-
+  const [lnglat, setLngLat] = useState([]);
   const [file, setFile] = useState(undefined);
 
   const handleFileChange = (event) => {
@@ -65,6 +139,8 @@ function CreateEventPage() {
       formData.append("type", type);
       formData.append("image", file);
       formData.append("group_id", group_id);
+      formData.append("lng", lnglat[0]);
+      formData.append("lat", lnglat[1]);
 
       for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
@@ -236,7 +312,8 @@ function CreateEventPage() {
             />
           </div>
         </div>
-        <div>
+
+        {/* <div>
           <label
             htmlFor="address"
             className="block mb-2 text-sm font-medium text-grey-900"
@@ -245,7 +322,7 @@ function CreateEventPage() {
           </label>
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
             <svg
-              className="h-5 w-5 text-gray-500"
+               className="h-5 w-5 text-gray-500"
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -273,7 +350,20 @@ function CreateEventPage() {
               required
             />
           </div>
+        </div> */}
+
+        {/* Map */}
+
+        <label
+          htmlFor="address"
+          className="block mb-2 text-sm font-medium text-grey-900"
+        >
+          Address
+        </label>
+        <div id="map" className="w-full h-44 mb-6 ">
+          <div ref={mapContainer} className="h-full rounded-lg" />
         </div>
+
         <div>
           <label
             htmlFor="type"
@@ -380,6 +470,7 @@ function CreateEventPage() {
           </div>
         </div>
         <br></br>
+
         <button
           type="submit"
           className="w-full text-white bg-purple-500 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

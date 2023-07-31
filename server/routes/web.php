@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TestEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -17,4 +18,10 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
+});
+
+Route::get('chat', function () {
+
+    $event = event(new TestEvent('Hello, this is a test message!'));
+    return null;
 });

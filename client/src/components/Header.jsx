@@ -1,27 +1,33 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-//import { Fragment, useState } from "react";
 import Modal from "./Modal";
+
 import axios from "axios";
+import { SearchContext } from "../context/SearchContext";
+import { UserDetailsContext } from "../context/UserDetailsContext";
 
 function Header() {
   const http = axios.create({
     baseURL: "http://localhost:8000",
+
     headers: {
       "X-Requested-with": "XMLHttpRequest",
     },
+
     withCredentials: true,
   });
 
-  //handle search
-  const [inputValue, setInputValue] = useState("");
+  //Context
+  const { searchValue, handleSearchChange } = useContext(SearchContext); //handle search
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    handleSearchChange(e.target.value);
   };
 
   //show login form || register form
+
   const [showModal1, setShowModal1] = useState(false);
+
   const [showModal2, setShowModal2] = useState(false);
 
   const [user, setUser] = useState(
@@ -31,7 +37,9 @@ function Header() {
   );
 
   //handle Login
+
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -45,9 +53,13 @@ function Header() {
         password,
       });
 
-      const user = await http.get("/api/user");
-      const current = localStorage.setItem("currentUser", JSON.stringify(user));
-      setUser(user);
+      const current = localStorage.setItem(
+        "currentUser",
+        JSON.stringify(login)
+      );
+
+      setUser(login);
+
       setShowModal1(false);
     } catch (error) {
       console.error("Login failed:", error);
@@ -61,19 +73,27 @@ function Header() {
   const handleLogout = async (e) => {
     try {
       const logout = await http.post("/api/logout");
+
       localStorage.removeItem("currentUser");
+
       setUser(null);
       navigate(`/`);
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Request failed:", error);
+      localStorage.removeItem("currentUser");
+      setUser(null);
+      navigate(`/`);
     }
   };
 
   //handle register
   const [file, setFile] = useState(undefined);
   const [name, setName] = useState("");
+
   const [birthday, setBirthday] = useState("");
+
   const [gender, setGender] = useState("");
+
   const [registerMail, setRegisterMail] = useState("");
   const [regisPassword, setRegisPassword] = useState("");
   //console.log(name, birthday, gender, registerMail, regisPassword, file);
@@ -81,6 +101,7 @@ function Header() {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
+  //console.log(handleFileChange);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -110,9 +131,11 @@ function Header() {
         password: regisPassword,
       });
 
-      const user = await http.get("/api/user");
-      const current = localStorage.setItem("currentUser", JSON.stringify(user));
-      setUser(user);
+      const current = localStorage.setItem(
+        "currentUser",
+        JSON.stringify(login)
+      );
+      setUser(login);
       setShowModal2(false);
 
       setFile(undefined);
@@ -127,46 +150,70 @@ function Header() {
       setLoading(false);
     }
   };
+  let imgPath = "";
+  let nameSplit = "";
+  let placeHolderImg = "";
+  if (user) {
+    imgPath = `http://localhost:8000${user.data.profile_pic}`;
+    nameSplit = user.data.user_name.split(" ");
+    placeHolderImg = `https://ui-avatars.com/api/?name=${nameSplit[0]}+${nameSplit[1]}`; // create dynamic avatar
+  }
 
   return (
     <Fragment>
       <div className="flex justify-between gap-5 align-top mx-auto sticky top-0 z-20 max-w-[2560px] px-10 py-2 bg-white shadow-md">
         <div className="flex gap-4">
           <Link to={`/`} className="">
-
             <div className="font-bold text-2xl cursor-pointer bg-purple-500 text-white rounded px-4 py-1 ">
-
               HOBBYLINKS
             </div>
           </Link>
+
           <div>
             <input
               type="text"
               placeholder="Search..."
               className="py-2 px-4 border border-gray-300 rounded-l-md focus:outline-none"
-              value={inputValue}
+              value={searchValue}
               onChange={handleInputChange}
             />
+
             <input
               type="text"
               className="py-2 px-4 border  border-gray-300 focus:outline-none"
-              value={inputValue}
-              onChange={handleInputChange}
+              placeholder="Osaka,Japan"
+              // value={searchValue}
+              // onChange={handleInputChange}
             />
-            <button className="bg-purple-500 text-white py-[9px] px-4 rounded-r-md hover:bg-purple-600 ">
+            <Link
+              to={`/`}
+              className="bg-purple-500 text-white py-[9px] px-4 rounded-r-md hover:bg-purple-600 "
+            >
               <i className="fas fa-search"></i>
-            </button>
+            </Link>
           </div>
         </div>
+
         {/* if Login show create from */}
 
         <div>
           {user != null ? (
             <>
               <div className="flex gap-1">
-                <p className="text-gray-700 font-bold mr-2  text-center pt-2">
-                  Welcome,{user.data.user_name}
-                </p>
+                <Link
+                  to={`/UserProfile/${user.data.user_id}`}
+                  className="text-gray-700 font-bold mr-2  text-center  flex"
+                >
+                  <img
+                    className="w-10 h-10 rounded-full border-4 border-slate-50 object-cover"
+                    src={
+                      user && imgPath == "http://localhost:8000null"
+                        ? placeHolderImg
+                        : imgPath
+                    }
+                  />
+                  <p className="pt-2">{user.data.user_name}</p>
+                </Link>
                 <Link
                   to="/createGroup"
                   className="border hover:border-b-purple-500 border-b-4 font-medium rounded-lg px-4 py-2 text-center h-10 "
@@ -198,6 +245,7 @@ function Header() {
               >
                 Login
               </button>
+
               <button
                 className="border py-2 px-4 rounded-md hover:border-purple-500 font-bold"
                 onClick={() => setShowModal2(true)}
@@ -210,10 +258,13 @@ function Header() {
       </div>
 
       {/* Login Form */}
+
       <Modal isVisible={showModal1} onClose={() => setShowModal1(false)}>
         <div className="py-6 px-6 lg:px-8 text-left">
           <h3 className="text-gray-800 font-bold text-2xl mb-1">Sign in</h3>
+
           <br></br>
+
           <form className="spacy-y-6" onSubmit={handleLogin}>
             <div>
               <label
@@ -222,6 +273,7 @@ function Header() {
               >
                 Your Email
               </label>
+
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -237,6 +289,7 @@ function Header() {
                     d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                   />
                 </svg>
+
                 <input
                   type="email"
                   name="email"
@@ -249,6 +302,7 @@ function Header() {
                 />
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="password"
@@ -256,6 +310,7 @@ function Header() {
               >
                 Your Password
               </label>
+
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -269,6 +324,7 @@ function Header() {
                     clipRule="evenodd"
                   />
                 </svg>
+
                 <input
                   type="password"
                   name="password"
@@ -281,12 +337,15 @@ function Header() {
                 />
               </div>
             </div>
+
             <div>
               <a href="#" className="text-sm text-blue-700 hover:underline">
                 Forgot Password?
               </a>
             </div>
+
             <br></br>
+
             <button
               type="submit"
               className="w-full text-white bg-purple-500 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -332,6 +391,7 @@ function Header() {
               >
                 Name
               </label>
+
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -345,6 +405,7 @@ function Header() {
                     clipRule="evenodd"
                   />
                 </svg>
+
                 <input
                   type="text"
                   name="user_name"
@@ -357,6 +418,7 @@ function Header() {
                 />
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="birthday"
@@ -364,6 +426,7 @@ function Header() {
               >
                 Birthday
               </label>
+
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2">
                 <svg
                   className="h-5 w-5 text-gray-500"
@@ -377,13 +440,20 @@ function Header() {
                   strokeLinejoin="round"
                 >
                   <path stroke="none" d="M0 0h24v24H0z" />
+
                   <rect x="4" y="5" width="16" height="16" rx="2" />
+
                   <line x1="16" y1="3" x2="16" y2="7" />
+
                   <line x1="8" y1="3" x2="8" y2="7" />
+
                   <line x1="4" y1="11" x2="20" y2="11" />
+
                   <line x1="11" y1="15" x2="12" y2="15" />
+
                   <line x1="12" y1="15" x2="12" y2="18" />
                 </svg>
+
                 <input
                   type="date"
                   name="birthday"
@@ -395,6 +465,7 @@ function Header() {
                 />
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="gender"
@@ -402,6 +473,7 @@ function Header() {
               >
                 Gender
               </label>
+
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2">
                 <svg
                   className="h-5 w-5 text-gray-500"
@@ -415,11 +487,16 @@ function Header() {
                   strokeLinejoin="round"
                 >
                   <path stroke="none" d="M0 0h24v24H0z" />
+
                   <circle cx="7" cy="5" r="2" />
+
                   <path d="M5 22v-5l-1-1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5" />
+
                   <circle cx="17" cy="5" r="2" />
+
                   <path d="M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4" />
                 </svg>
+
                 <select
                   id="gender"
                   name="gender"
@@ -433,6 +510,7 @@ function Header() {
                 </select>
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="header_path"
@@ -458,13 +536,47 @@ function Header() {
 
                 <input
                   type="file"
+                  name="header_path"
+                  id="header_path"
+                  className="boder border-gray-300 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
+                />
+              </div>
+            </div>
+            {/* banner upload */}
+            {/* <div>
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm font-medium text-grey-900"
+              >
+                Email
+              </label>
+
+              <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                  />
+                </svg>
+
+                <input
+                  type="file"
                   name="image"
                   id="image"
                   onChange={handleFileChange}
                   className="boder border-gray-300 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5"
                 />
               </div>
-            </div>
+            </div> */}
+
             <div>
               <label
                 htmlFor="email"
@@ -499,6 +611,7 @@ function Header() {
                 />
               </div>
             </div>
+
             <div>
               <label
                 htmlFor="password"
@@ -506,6 +619,7 @@ function Header() {
               >
                 Password
               </label>
+
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -519,6 +633,7 @@ function Header() {
                     clipRule="evenodd"
                   />
                 </svg>
+
                 <input
                   type="password"
                   name="password"
@@ -531,7 +646,9 @@ function Header() {
                 />
               </div>
             </div>
+
             <br></br>
+
             <button
               type="submit"
               className="w-full text-white bg-purple-500 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
